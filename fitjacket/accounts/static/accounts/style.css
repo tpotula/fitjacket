@@ -1,51 +1,33 @@
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+  background: linear-gradient(to right, #eaf6ff, #f0f4ff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container {
-    text-align: center;
-    padding: 40px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    width: 90%;
-    max-width: 400px;
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
-h1 {
-    font-size: 2.2em;
-    margin-bottom: 10px;
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
 }
 
-p {
-    font-size: 1.1em;
-    margin-bottom: 30px;
-    color: #555;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.btn-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.card .btn {
+  font-weight: bold;
+  border-radius: 8px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.btn {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: background 0.3s ease;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background-color: #0056b3;
+.badge {
+  font-size: 0.9rem;
+  padding: 0.4em 0.75em;
 }

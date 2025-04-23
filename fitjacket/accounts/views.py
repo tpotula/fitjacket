@@ -92,3 +92,7 @@ def reset_password_view(request):
                 messages.error(request, "User does not exist.")
     return render(request, 'accounts/reset_password.html')
 
+@login_required
+def dashboard_view(request):
+    profile = request.user.profile
+    return render(request, 'accounts/dashboard.html', {'profile': profile})

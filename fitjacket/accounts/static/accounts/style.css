@@ -1,6 +1,8 @@
+/* === BASE STYLING === */
 body {
   background: linear-gradient(to right, #eaf6ff, #f0f4ff);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .navbar-brand {
@@ -10,7 +12,7 @@ body {
 
 .card {
   border-radius: 12px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
 }
 
 .card:hover {
@@ -30,4 +32,89 @@ body {
 .badge {
   font-size: 0.9rem;
   padding: 0.4em 0.75em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.progress {
+  transition: background-color 0.3s ease;
+}
+
+.btn,
+.badge,
+.progress,
+.navbar {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === DARK MODE === */
+.dark-mode {
+  background: linear-gradient(to bottom right, #121212, #1c1c1c) !important;
+  color: #e0e0e0 !important;
+}
+
+/* Navbar */
+.dark-mode .navbar {
+  background-color: #222 !important;
+  color: #e0e0e0 !important;
+}
+
+.dark-mode .navbar .navbar-brand {
+  color: #3a86ff !important;
+}
+
+.dark-mode .navbar .text-muted {
+  color: #ccc !important;
+}
+
+/* Cards and Containers */
+.dark-mode .card,
+.dark-mode .bg-white {
+  background-color: #242424 !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #333;
+}
+
+/* Badges */
+.dark-mode .badge.bg-info {
+  background-color: #005f73 !important;
+  color: #e0f7fa !important;
+}
+
+.dark-mode .badge.bg-warning {
+  background-color: #ffb703 !important;
+  color: #222 !important;
+}
+
+/* Progress */
+.dark-mode .progress {
+  background-color: #333 !important;
+}
+
+.dark-mode .progress-bar {
+  background-color: #3a86ff !important;
+}
+
+/* Text */
+.dark-mode .text-muted {
+  color: #aaaaaa !important;
+}
+
+/* Buttons */
+.dark-mode .btn-primary {
+  background-color: #3a86ff;
+  border-color: #3a86ff;
+}
+
+.dark-mode .btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.dark-mode .btn-outline-danger {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.dark-mode .btn-outline-danger:hover {
+  background-color: #ff6b6b;
+  color: white;
 }

@@ -5,14 +5,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.navbar-brand {
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
 .card {
   border-radius: 12px;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .card:hover {
@@ -29,21 +24,17 @@ body {
   text-overflow: ellipsis;
 }
 
+.badge, .btn, .progress {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .badge {
   font-size: 0.9rem;
   padding: 0.4em 0.75em;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .progress {
   transition: background-color 0.3s ease;
-}
-
-.btn,
-.badge,
-.progress,
-.navbar {
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* === DARK MODE === */
@@ -52,21 +43,7 @@ body {
   color: #e0e0e0 !important;
 }
 
-/* Navbar */
-.dark-mode .navbar {
-  background-color: #222 !important;
-  color: #e0e0e0 !important;
-}
-
-.dark-mode .navbar .navbar-brand {
-  color: #3a86ff !important;
-}
-
-.dark-mode .navbar .text-muted {
-  color: #ccc !important;
-}
-
-/* Cards and Containers */
+/* Dark Mode Components */
 .dark-mode .card,
 .dark-mode .bg-white {
   background-color: #242424 !important;
@@ -74,7 +51,6 @@ body {
   border: 1px solid #333;
 }
 
-/* Badges */
 .dark-mode .badge.bg-info {
   background-color: #005f73 !important;
   color: #e0f7fa !important;
@@ -85,7 +61,6 @@ body {
   color: #222 !important;
 }
 
-/* Progress */
 .dark-mode .progress {
   background-color: #333 !important;
 }
@@ -94,12 +69,10 @@ body {
   background-color: #3a86ff !important;
 }
 
-/* Text */
 .dark-mode .text-muted {
   color: #aaaaaa !important;
 }
 
-/* Buttons */
 .dark-mode .btn-primary {
   background-color: #3a86ff;
   border-color: #3a86ff;
@@ -117,4 +90,105 @@ body {
 .dark-mode .btn-outline-danger:hover {
   background-color: #ff6b6b;
   color: white;
+}
+
+/* === SIDEBAR LAYOUT === */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #3a86ff;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-username {
+  font-weight: bold;
+  color: white;
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 0.65rem 1rem;
+  margin: 0.25rem 0;
+  border-radius: 8px;
+  color: #444;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background-color: #eaf6ff;
+  color: #3a86ff;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 240px;
+  flex-grow: 1;
+  background: linear-gradient(to right, #eaf6ff, #f0f4ff);
+}
+
+/* Dark Mode Sidebar */
+.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  border-right: 1px solid #333;
+}
+
+.dark-mode .sidebar .sidebar-link {
+  color: #ccc;
+}
+
+.dark-mode .sidebar .sidebar-link:hover {
+  background-color: #2a2a2a;
+  color: #3a86ff;
+}
+
+.dark-mode .sidebar-section-title {
+  color: #777;
+}
+
+.dark-mode .sidebar-footer {
+  border-color: #333;
+}
+
+.dark-mode .main-content {
+  background: linear-gradient(to bottom right, #121212, #1c1c1c);
 }

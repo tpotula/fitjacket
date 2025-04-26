@@ -1,153 +1,143 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dashboard | FitJacket</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'accounts/style.css' %}" />
 </head>
-<body>
+<body class="dashboard-layout">
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold text-primary" href="#">FitJacket</a>
-      <div class="ms-auto d-flex align-items-center gap-3">
-        <span class="text-muted">Hi, {{ request.user.username }}!</span>
+<!-- ✅ SIDEBAR START -->
+<div class="sidebar d-flex flex-column p-3">
 
-        <!-- Dark Mode Switch -->
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="darkModeToggle">
-          <label class="form-check-label text-muted" for="darkModeToggle">Dark Mode</label>
-        </div>
-
-        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
-      </div>
+  <!-- User Info -->
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <div class="sidebar-avatar">
+      {{ request.user.username|first|upper }}
     </div>
-  </nav>
-
-  <div class="container py-5">
-
-    <!-- WELCOME MESSAGE -->
-    <div class="text-center mb-4">
-      <h2 class="fw-semibold">Welcome, {{ request.user.username }}</h2>
-      <p class="text-muted mb-1">Fitness Level:
-        <span class="badge bg-info text-dark">{{ profile.level|capfirst }}</span>
-      </p>
+    <div>
+      <div class="sidebar-username">{{ request.user.username }}</div>
+      <div class="text-muted small">{{ profile.level|capfirst }}</div>
     </div>
-
-    <!-- PROFILE & SNAPSHOT CARDS -->
-    <div class="row justify-content-center g-4 mb-5">
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm p-4">
-          <h5 class="mb-3">Your Profile</h5>
-          <ul class="list-unstyled mb-0">
-            <li><strong>Username:</strong> {{ request.user.username }}</li>
-            <li><strong>Fitness Level:</strong> {{ profile.level|capfirst }}</li>
-            <li><strong>Member Since:</strong> {{ request.user.date_joined|date:"F Y" }}</li>
-            <li><strong>Last Login:</strong> {{ request.user.last_login|date:"M d, Y" }}</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm p-4">
-          <h5 class="mb-3">Today’s Summary</h5>
-          <ul class="list-unstyled mb-0">
-            <li><strong>Workouts Logged:</strong> 0</li>
-            <li><strong>Calories Burned:</strong> —</li>
-            <li><strong>Streak:</strong> 3 days</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- STAT COUNTERS -->
-    <div class="row text-center g-4 mb-5">
-      <div class="col-6 col-md-4">
-        <div class="bg-white shadow-sm rounded p-3">
-          <h4 class="fw-bold text-primary mb-1">14</h4>
-          <small class="text-muted">Workouts Logged</small>
-        </div>
-      </div>
-      <div class="col-6 col-md-4">
-        <div class="bg-white shadow-sm rounded p-3">
-          <h4 class="fw-bold text-primary mb-1">6.3 hrs</h4>
-          <small class="text-muted">Total Time</small>
-        </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <div class="bg-white shadow-sm rounded p-3">
-          <h4 class="fw-bold text-primary mb-1">2,180</h4>
-          <small class="text-muted">Calories Burned</small>
-        </div>
-      </div>
-    </div>
-
-    <!-- GOAL PROGRESS BAR -->
-    <div class="row justify-content-center mb-5">
-      <div class="col-md-6">
-        <h6 class="text-muted mb-2">Monthly Goal: 15 Workouts</h6>
-        <div class="progress" style="height: 20px;">
-          <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="9" aria-valuemin="0" aria-valuemax="15">
-            9 / 15
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ACTION CARDS -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-      <div class="col d-flex">
-        <div class="card flex-fill shadow-sm text-center">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Log a Workout</h5>
-              <p class="card-text">Track your reps, sets, duration, and more.</p>
-            </div>
-            <a href="#" class="btn btn-primary mt-3 w-100">Start Logging</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col d-flex">
-        <div class="card flex-fill shadow-sm text-center">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">View Progress</h5>
-              <p class="card-text">See how your fitness has improved over time.</p>
-            </div>
-            <a href="#" class="btn btn-primary mt-3 w-100">View Graphs</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col d-flex">
-        <div class="card flex-fill shadow-sm text-center">
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title">Set Reminders</h5>
-              <p class="card-text">Stay consistent with your workout plan.</p>
-            </div>
-            <a href="#" class="btn btn-primary mt-3 w-100">Set Reminder</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SMART TIP -->
-    <div class="text-center mt-5">
-      <span class="badge bg-warning text-dark">Tip of the Day</span>
-      <p class="text-muted mt-2 mb-0">Focus on consistency. A short workout is better than none.</p>
-    </div>
-
   </div>
 
+  <!-- Group 1: Fitness -->
+  <div class="sidebar-section-title">Fitness</div>
+  <a href="#" class="sidebar-link">Log Workout</a>
+  <a href="#" class="sidebar-link">View Progress</a>
+  <a href="#" class="sidebar-link">Set Reminders</a>
 
+  <!-- Group 2: Wellness -->
+  <div class="sidebar-section-title">Wellness</div>
+  <a href="#" class="sidebar-link">Track Nutrition</a>
+  <a href="#" class="sidebar-link">AI Workout Planner</a>
 
+  <!-- Group 3: Community -->
+  <div class="sidebar-section-title">Community</div>
+  <a href="#" class="sidebar-link">Join Challenges</a>
+  <a href="#" class="sidebar-link">Profile</a>
 
+  <!-- Footer -->
+  <div class="sidebar-footer mt-4">
+    <div class="form-check form-switch mb-3">
+      <input class="form-check-input" type="checkbox" id="darkModeToggle">
+      <label class="form-check-label text-muted" for="darkModeToggle">Dark Mode</label>
+    </div>
+    <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100">Logout</a>
+  </div>
 
+</div>
+<!-- ✅ SIDEBAR END -->
+
+<!-- ✅ MAIN CONTENT AREA -->
+<!-- ✅ MAIN CONTENT AREA -->
+<div class="main-content">
+  <div class="container py-4">
+
+  <!-- SITE TITLE -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">Fit Jacket</h2>
+  </div>
+
+  <!-- SUMMARY & WEEKLY -->
+  <div class="row g-4 mb-4">
+    <!-- Today's Summary -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm p-4 h-100 text-center">
+        <h5 class="mb-3">Today's Summary</h5>
+        <p class="mb-1"><strong>Steps:</strong> 6,843</p>
+        <p class="mb-1"><strong>Calories Burned:</strong> 450</p>
+        <p class="mb-1"><strong>Workout Duration:</strong> 45 min</p>
+      </div>
+    </div>
+
+    <!-- Weekly Activity -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm p-4 h-100">
+        <h5 class="mb-3">Weekly Activity</h5>
+        <div class="bg-light rounded text-center py-5 h-100 d-flex align-items-center justify-content-center">
+          <em class="text-muted">Weekly Activity Graph Placeholder</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOAL PROGRESS -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-8">
+      <div class="card shadow-sm p-4 text-center">
+        <h5 class="mb-3">Monthly Goal Progress</h5>
+        <div class="progress" style="height: 20px;">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="9" aria-valuemin="0" aria-valuemax="15">
+            9 of 15 Workouts
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMINDERS & CHALLENGES -->
+  <div class="row g-4 mb-4">
+    <!-- Reminders -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4 h-100">
+        <h5 class="mb-3">Reminders</h5>
+        <ul class="list-unstyled mb-0">
+          <li>• Workout at 6 PM</li>
+          <li>• Drink 2L Water</li>
+          <li>• Log today's meals</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Challenges -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4 h-100">
+        <h5 class="mb-3">Ongoing Challenges</h5>
+        <p class="mb-1">April Push-Up Challenge - Day 7</p>
+        <p class="mb-0">Spring Step Challenge - 70% Complete</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIP OF THE DAY -->
+  <div class="text-center mt-4">
+    <span class="badge bg-warning text-dark">Tip of the Day</span>
+    <p class="text-muted mt-2">Stay consistent, not perfect. Small steps daily lead to big results.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="text-center text-muted py-4 small mt-5">
+    © 2025 FitJacket — Build the best version of yourself.
+  </footer>
+</div>
+
+</div>
+
+<!-- ✅ DARK MODE SCRIPT -->
 <script>
   const toggle = document.getElementById('darkModeToggle');
   const html = document.body;
@@ -170,5 +160,6 @@
   toggle.checked = isDark;
   applyDarkMode(isDark);
 </script>
+
 </body>
 </html>

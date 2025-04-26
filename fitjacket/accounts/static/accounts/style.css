@@ -126,7 +126,6 @@ body {
 
 .sidebar-username {
   font-weight: bold;
-  color: white;
 }
 
 .sidebar-section-title {
@@ -192,3 +191,20 @@ body {
 .dark-mode .main-content {
   background: linear-gradient(to bottom right, #121212, #1c1c1c);
 }
+
+/* Sidebar User Info - Light Mode */
+.user-info .user-level {
+  color: #333 !important; /* readable in light mode */
+}
+
+/* Optional avatar circle styling */
+.avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+

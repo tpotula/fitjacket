@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center fw-bold text-primary mb-4">Injury Log</h2>
+
+    <!-- Add Injury Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-4">Log New Injury</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.body_part.id_for_label }}" class="form-label">Body Part</label>
+                            {{ form.body_part }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.severity.id_for_label }}" class="form-label">Severity</label>
+                            {{ form.severity }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Log Injury</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Injuries -->
+    {% if active_injuries %}
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Active Injuries</h4>
+        </div>
+        <div class="card-body">
+            {% for injury in active_injuries %}
+            <div class="injury-item mb-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>{{ injury.get_body_part_display }} Injury</h5>
+                        <p class="mb-1"><strong>Severity:</strong> {{ injury.get_severity_display }}</p>
+                        <p class="mb-1"><strong>Logged:</strong> {{ injury.date_logged|date:"F j, Y" }}</p>
+                        <p class="mb-1"><strong>Description:</strong> {{ injury.description }}</p>
+                    </div>
+                    <form method="post" action="{% url 'toggle_injury' injury.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">Mark as Recovered</button>
+                    </form>
+                </div>
+                <div class="mt-3">
+                    <h6>Recovery Recommendations:</h6>
+                    <p class="text-muted">{{ injury.recovery_recommendations|linebreaks }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Inactive Injuries -->
+    {% if inactive_injuries %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="card-title mb-0">Recovered Injuries</h4>
+        </div>
+        <div class="card-body">
+            {% for injury in inactive_injuries %}
+            <div class="injury-item mb-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>{{ injury.get_body_part_display }} Injury</h5>
+                        <p class="mb-1"><strong>Severity:</strong> {{ injury.get_severity_display }}</p>
+                        <p class="mb-1"><strong>Logged:</strong> {{ injury.date_logged|date:"F j, Y" }}</p>
+                        <p class="mb-1"><strong>Description:</strong> {{ injury.description }}</p>
+                    </div>
+                    <form method="post" action="{% url 'toggle_injury' injury.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-warning">Mark as Active</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

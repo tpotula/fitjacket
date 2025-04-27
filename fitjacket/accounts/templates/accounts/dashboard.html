@@ -33,6 +33,7 @@
   <!-- Group 2: Wellness -->
   <div class="sidebar-section-title">Wellness</div>
   <a href="#" class="sidebar-link">Track Nutrition</a>
+  <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
   <!-- Group 3: Community -->
@@ -122,7 +123,7 @@
         {% for ch in profile.joined_challenges.all %}
         <li>{{ ch.title }}</li>
         {% empty %}
-        <li>You haven’t joined any yet. <a href="{% url 'challenges:list' %}">Browse →</a></li>
+        <li>You haven't joined any yet. <a href="{% url 'challenges:list' %}">Browse →</a></li>
         {% endfor %}
       </div>
     </div>

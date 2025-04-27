@@ -285,3 +285,29 @@ body {
   color: #e0e0e0;
 }
 
+/* Make sure html/body take full height */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Sidebar itself */
+.sidebar {
+  position: fixed;      /* stick it to the left of the screen */
+  top: 0;
+  left: 0;
+  width: 250px;         /* or whatever your sidebar width is */
+  height: 100vh;        /* full viewport height */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;     /* enable scrolling if content is taller than viewport */
+  background-color: #1e1e1e;  /* or your theme color */
+}
+
+/* If you have a nav list inside */
+.sidebar nav {
+  flex: 1;              /* take up all available space */
+  overflow-y: auto;     /* scroll the nav only if it overflows */
+  min-height: 0;        /* necessary in some flex layouts to allow scrolling */
+}
+

@@ -6,4 +6,5 @@ urlpatterns = [
     path('', lambda request: redirect('auth_home')),  # <-- Add this line
     path('admin/', admin.site.urls),
     path('auth/', include('accounts.urls')),
+    path('workouts/', include('workouts.urls')),
 ]

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Title -->
+  <h2 class="text-center fw-bold text-primary mb-4">Workouts</h2>
+
+  <!-- View Workout Log Button -->
+  <div class="text-center mb-5">
+    <a href="{% url 'workout_log' %}" class="btn btn-outline-primary">
+      View Workout Log
+    </a>
+  </div>
+
+  <!-- Guided Workouts -->
+  <h4 class="text-center fw-semibold mb-4">Guided Workouts</h4>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for workout in guided_workouts %}
+    <div class="col">
+      <div class="card shadow-sm h-100 workout-card" data-bs-toggle="modal" data-bs-target="#workoutModal{{ workout.id }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ workout.title }}</h5>
+          <p class="card-text small flex-grow-1">
+            {{ workout.description|truncatechars:120 }}
+          </p>
+          <form method="post" class="mt-3">
+            {% csrf_token %}
+            <input type="hidden" name="guided_workout_id" value="{{ workout.id }}">
+            <button type="submit" class="btn btn-primary w-100">Log This Workout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Full Workout -->
+    <div class="modal fade" id="workoutModal{{ workout.id }}" tabindex="-1" aria-labelledby="workoutModalLabel{{ workout.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="workoutModalLabel{{ workout.id }}">{{ workout.title }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{ workout.description|linebreaksbr }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+  {% if show_custom_form %}
+  <hr class="my-5">
+  <h4 class="text-center fw-semibold mb-4">Custom Workout Log</h4>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm p-4">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">Save Custom Workout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

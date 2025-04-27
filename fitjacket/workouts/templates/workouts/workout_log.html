@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center fw-bold text-primary mb-4">Workout Log</h2>
+
+  <div class="text-center mb-4">
+    <a href="{% url 'workouts_home' %}" class="btn btn-outline-secondary">
+      Back to Workouts
+    </a>
+  </div>
+
+  <div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle shadow-sm table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Workout</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if workouts %}
+        {% for workout in workouts %}
+        <tr>
+          <td>{{ workout.date|date:"F j, Y" }}</td>
+          <td>{{ workout.exercise_name }}</td>
+          <td>
+            {% if workout.duration %}
+              {{ workout.duration }} min
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>{{ workout.notes|default:"No notes" }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="4" class="text-center text-muted">
+            No workouts logged yet. Start by adding a workout.
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}

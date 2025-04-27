@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+
+  <h2 class="fw-bold text-primary mb-4">Workouts</h2>
+
+  <!-- Guided Workouts -->
+  <div class="mb-5">
+    <h4 class="mb-3">Guided Workouts</h4>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for workout in guided_workouts %}
+      <div class="col">
+        <div class="card shadow-sm p-3 h-100">
+          <h5>{{ workout.title }}</h5>
+          <p class="text-muted">{{ workout.description }}</p>
+          <small class="text-muted">Duration: {{ workout.duration_minutes }} min</small>
+          <form method="post" class="mt-3">
+            {% csrf_token %}
+            <input type="hidden" name="guided_workout_id" value="{{ workout.id }}">
+            <button type="submit" class="btn btn-primary w-100">Log This Workout</button>
+          </form>
+        </div>
+      </div>
+      {% empty %}
+      <p>No guided workouts found.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Custom Workout Form for Athletes -->
+  {% if show_custom_form %}
+  <div class="mb-5">
+    <h4 class="mb-3">Log a Custom Workout</h4>
+    <div class="card shadow-sm p-4">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100 mt-3">Save Custom Workout</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

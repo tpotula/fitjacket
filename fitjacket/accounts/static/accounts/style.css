@@ -311,3 +311,25 @@ html, body {
   min-height: 0;        /* necessary in some flex layouts to allow scrolling */
 }
 
+/* —————————————————————————————————————————————
+   Layout: keep sidebar fixed and give main area a gutter
+   ————————————————————————————————————————————— */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.sidebar {
+  width: 250px;           /* ← match your sidebar’s width */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;       /* scrolling if it grows too tall */
+}
+
+.main-content {
+  margin-left: 250px;     /* ← same as .sidebar width */
+  padding: 2rem;          /* ← your desired gutter from the sidebar */
+}
+

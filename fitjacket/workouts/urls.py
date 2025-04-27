@@ -6,4 +6,8 @@ urlpatterns = [
     path('', views.workouts_home_view, name='workouts_home'),
     path('guided/', views.guided_workouts_view, name='guided_workouts'),
     path('log/', views.workout_log_view, name='workout_log'),
+    path('nutrition/', views.nutrition_tracking_view, name='nutrition_tracking'),
+    path('nutrition/add/', views.add_meal_view, name='add_meal'),
+    path('injuries/', views.injury_log_view, name='injury_log'),
+    path('injuries/toggle/<int:injury_id>/', views.toggle_injury_status, name='toggle_injury'),
 ]

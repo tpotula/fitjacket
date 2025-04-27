@@ -32,6 +32,7 @@
 
   <div class="sidebar-section-title">Wellness</div>
   <a href="#" class="sidebar-link">Track Nutrition</a>
+  <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
   <div class="sidebar-section-title">Community</div>
@@ -93,6 +94,7 @@
 
     <!-- Reminders & Ongoing Challenges -->
     <div class="row g-4 mb-4">
+      <!-- Reminders -->
       <div class="col-md-6">
         <div class="card shadow-sm p-4 h-100">
           <h5 class="mb-3">Reminders</h5>
@@ -104,6 +106,7 @@
         </div>
       </div>
 
+      <!-- Ongoing Challenges -->
       <div class="col-md-6">
         <div class="card shadow-sm p-4 h-100">
           <h5 class="mb-3">Ongoing Challenges</h5>
@@ -157,6 +160,5 @@
   toggle.checked = isDark;
   applyDarkMode(isDark);
 </script>
-
 </body>
 </html>

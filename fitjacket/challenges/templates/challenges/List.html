@@ -9,16 +9,46 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ c.title }}</h5>
                     <p>{{ c.description|truncatewords:25 }}</p>
-                    {% if c in joined %}
-                    <button class="btn btn-secondary" disabled>Joined</button>
+
+                    {% if c.pk in completed_ids %}
+                    <button class="btn btn-secondary" disabled>
+                        Already completed
+                    </button>
+                    {% elif c.pk in joined %}
+                    <button class="btn btn-secondary" disabled>
+                        Joined
+                    </button>
                     {% else %}
-                    <a href="{% url 'challenges:join' c.pk %}" class="btn btn-primary">Join</a>
+                    <a href="{% url 'challenges:join' c.pk %}" class="btn btn-primary">
+                        Join
+                    </a>
                     {% endif %}
+
                 </div>
             </div>
         </div>
         {% empty %}
         <p>No challenges available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Ongoing Challenges -->
+    <div class="mt-5">
+        <h2>Ongoing Challenges</h2>
+        {% for p in participations %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <span>{{ p.challenge.title }}</span>
+                <form method="post" action="{% url 'challenges:complete' p.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-success">
+                        Complete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p>You have no ongoing challenges.</p>
         {% endfor %}
     </div>
 </div>

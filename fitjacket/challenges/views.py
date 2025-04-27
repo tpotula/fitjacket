@@ -62,5 +62,6 @@ def complete_challenge(request, participation_id):
     )
     if request.method == 'POST':
         p.completed_at = timezone.now()
+        p.points_awarded = p.challenge.point_value
         p.save()
     return redirect('challenges:list')

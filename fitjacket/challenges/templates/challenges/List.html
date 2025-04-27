@@ -10,6 +10,12 @@
                     <h5 class="card-title">{{ c.title }}</h5>
                     <p>{{ c.description|truncatewords:25 }}</p>
 
+                    <!-- Difficulty and Points -->
+                    <p>
+                        <strong>Difficulty:</strong> {{ c.get_difficulty_display }}<br>
+                        <strong>Points:</strong> {{ c.point_value }}
+                    </p>
+
                     {% if c.pk in completed_ids %}
                     <button class="btn btn-secondary" disabled>
                         Already completed

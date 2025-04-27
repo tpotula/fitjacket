@@ -5,14 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .forms import LoginForm, SignupForm
 from django.contrib.messages import get_messages
 
-
+from .forms import LoginForm, SignupForm
+from challenges.models import Participation
 
 
 def auth_home(request):
     return render(request, 'accounts/auth_home.html')
+
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -34,6 +35,7 @@ def login_view(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
+
 def signup_view(request):
     form = SignupForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
@@ -50,14 +52,11 @@ def signup_view(request):
             return redirect('dashboard')
     return render(request, 'accounts/signup.html', {'form': form})
 
+
 def logout_view(request):
     logout(request)
     return redirect('auth_home')
 
-@login_required
-def dashboard_view(request):
-    profile = request.user.profile
-    return render(request, 'accounts/dashboard.html', {'profile': profile})
 
 class PasswordResetForm(forms.Form):
     new_password = forms.CharField(widget=forms.PasswordInput, label="New password")
@@ -70,6 +69,7 @@ class PasswordResetForm(forms.Form):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match.")
         return cleaned_data
+
 
 def reset_password_view(request):
     if request.method == 'POST':
@@ -92,7 +92,16 @@ def reset_password_view(request):
                 messages.error(request, "User does not exist.")
     return render(request, 'accounts/reset_password.html')
 
+
 @login_required
 def dashboard_view(request):
     profile = request.user.profile
-    return render(request, 'accounts/dashboard.html', {'profile': profile})
+    ongoing_challenges = Participation.objects.filter(
+        user=request.user,
+        completed_at__isnull=True
+    )
+
+    return render(request, 'accounts/dashboard.html', {
+        'profile': profile,
+        'ongoing_challenges': ongoing_challenges,
+    })

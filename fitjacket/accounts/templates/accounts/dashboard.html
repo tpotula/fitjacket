@@ -10,7 +10,7 @@
 </head>
 <body class="dashboard-layout">
 
-<!-- ✅ SIDEBAR START -->
+<!-- SIDEBAR -->
 <div class="sidebar d-flex flex-column p-3">
 
   <!-- User Info -->
@@ -24,26 +24,21 @@
     </div>
   </div>
 
-  <!-- Group 1: Fitness -->
+  <!-- Groups -->
   <div class="sidebar-section-title">Fitness</div>
   <a href="{% url 'workouts_home' %}" class="sidebar-link">Workouts</a>
   <a href="#" class="sidebar-link">View Progress</a>
   <a href="#" class="sidebar-link">Set Reminders</a>
 
-  <!-- Group 2: Wellness -->
   <div class="sidebar-section-title">Wellness</div>
   <a href="#" class="sidebar-link">Track Nutrition</a>
   <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
-  <!-- Group 3: Community -->
   <div class="sidebar-section-title">Community</div>
-  <a href="{% url 'challenges:list' %}" class="sidebar-link">
-    Join Challenges
-  </a>
+  <a href="{% url 'challenges:list' %}" class="sidebar-link">Join Challenges</a>
   <a href="#" class="sidebar-link">Profile</a>
 
-  <!-- Footer -->
   <div class="sidebar-footer mt-4">
     <div class="form-check form-switch mb-3">
       <input class="form-check-input" type="checkbox" id="darkModeToggle">
@@ -51,109 +46,108 @@
     </div>
     <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100">Logout</a>
   </div>
-
 </div>
-<!-- ✅ SIDEBAR END -->
+<!-- END SIDEBAR -->
 
-<!-- ✅ MAIN CONTENT AREA -->
-<!-- ✅ MAIN CONTENT AREA -->
+<!-- MAIN CONTENT -->
 <div class="main-content">
   <div class="container py-4">
 
-  <!-- SITE TITLE -->
-  <div class="text-center mb-4">
-    <h2 class="fw-bold text-primary">Fit Jacket</h2>
-  </div>
-
-  <!-- SUMMARY & WEEKLY -->
-  <div class="row g-4 mb-4">
-    <!-- Today's Summary -->
-    <div class="col-lg-4">
-      <div class="card shadow-sm p-4 h-100 text-center">
-        <h5 class="mb-3">Today's Summary</h5>
-        <p class="mb-1"><strong>Steps:</strong> 6,843</p>
-        <p class="mb-1"><strong>Calories Burned:</strong> 450</p>
-        <p class="mb-1"><strong>Workout Duration:</strong> 45 min</p>
-      </div>
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">Fit Jacket</h2>
     </div>
 
-    <!-- Weekly Activity -->
-    <div class="col-lg-8">
-      <div class="card shadow-sm p-4 h-100">
-        <h5 class="mb-3">Weekly Activity</h5>
-        <div class="bg-light rounded text-center py-5 h-100 d-flex align-items-center justify-content-center">
-          <em class="text-muted">Weekly Activity Graph Placeholder</em>
+    <!-- Summary & Weekly -->
+    <div class="row g-4 mb-4">
+      <div class="col-lg-4">
+        <div class="card shadow-sm p-4 h-100 text-center">
+          <h5 class="mb-3">Today's Summary</h5>
+          <p class="mb-1"><strong>Steps:</strong> 6,843</p>
+          <p class="mb-1"><strong>Calories Burned:</strong> 450</p>
+          <p class="mb-1"><strong>Workout Duration:</strong> 45 min</p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- GOAL PROGRESS -->
-  <div class="row justify-content-center mb-4">
-    <div class="col-lg-8">
-      <div class="card shadow-sm p-4 text-center">
-        <h5 class="mb-3">Monthly Goal Progress</h5>
-        <div class="progress" style="height: 20px;">
-          <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="9" aria-valuemin="0" aria-valuemax="15">
-            9 of 15 Workouts
+      <div class="col-lg-8">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3">Weekly Activity</h5>
+          <div class="bg-light rounded text-center py-5 h-100 d-flex align-items-center justify-content-center">
+            <em class="text-muted">Weekly Activity Graph Placeholder</em>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- REMINDERS & CHALLENGES -->
-  <div class="row g-4 mb-4">
-    <!-- Reminders -->
-    <div class="col-md-6">
-      <div class="card shadow-sm p-4 h-100">
-        <h5 class="mb-3">Reminders</h5>
-        <ul class="list-unstyled mb-0">
-          <li>• Workout at 6 PM</li>
-          <li>• Drink 2L Water</li>
-          <li>• Log today's meals</li>
-        </ul>
+    <!-- Monthly Goal Progress -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm p-4 text-center">
+          <h5 class="mb-3">Monthly Goal Progress</h5>
+          <div class="progress" style="height: 20px;">
+            <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="9" aria-valuemin="0" aria-valuemax="15">
+              9 of 15 Workouts
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Challenges -->
-    <div class="col-md-6">
-      <div class="card shadow-sm p-4 h-100">
-        <h5 class="mb-3">Ongoing Challenges</h5>
-        {% for ch in profile.joined_challenges.all %}
-        <li>{{ ch.title }}</li>
-        {% empty %}
-        <li>You haven't joined any yet. <a href="{% url 'challenges:list' %}">Browse →</a></li>
-        {% endfor %}
+    <!-- Reminders & Ongoing Challenges -->
+    <div class="row g-4 mb-4">
+      <!-- Reminders -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3">Reminders</h5>
+          <ul class="list-unstyled mb-0">
+            <li>• Workout at 6 PM</li>
+            <li>• Drink 2L Water</li>
+            <li>• Log today's meals</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Ongoing Challenges -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3">Ongoing Challenges</h5>
+          {% for p in ongoing_challenges %}
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>{{ p.challenge.title }}</span>
+            <form method="post" action="{% url 'challenges:complete' p.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-success">Complete</button>
+            </form>
+          </div>
+          {% empty %}
+          <p>No ongoing challenges. <a href="{% url 'challenges:list' %}">Browse →</a></p>
+          {% endfor %}
+        </div>
       </div>
     </div>
+
+    <!-- Tip of the Day -->
+    <div class="text-center mt-4">
+      <span class="badge bg-warning text-dark">Tip of the Day</span>
+      <p class="text-muted mt-2">Stay consistent, not perfect. Small steps daily lead to big results.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-4 small mt-5">
+      © 2025 FitJacket — Build the best version of yourself.
+    </footer>
+
   </div>
-
-  <!-- TIP OF THE DAY -->
-  <div class="text-center mt-4">
-    <span class="badge bg-warning text-dark">Tip of the Day</span>
-    <p class="text-muted mt-2">Stay consistent, not perfect. Small steps daily lead to big results.</p>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="text-center text-muted py-4 small mt-5">
-    © 2025 FitJacket — Build the best version of yourself.
-  </footer>
 </div>
+<!-- END MAIN CONTENT -->
 
-</div>
-
-<!-- ✅ DARK MODE SCRIPT -->
+<!-- Dark Mode Script -->
 <script>
   const toggle = document.getElementById('darkModeToggle');
   const html = document.body;
 
   function applyDarkMode(enabled) {
-    if (enabled) {
-      html.classList.add('dark-mode');
-    } else {
-      html.classList.remove('dark-mode');
-    }
+    if (enabled) html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
   }
 
   toggle.addEventListener('change', () => {
@@ -166,6 +160,5 @@
   toggle.checked = isDark;
   applyDarkMode(isDark);
 </script>
-
 </body>
 </html>

@@ -12,4 +12,5 @@ urlpatterns = [
         views.complete_challenge,
         name='complete'
     ),
+    path('leaderboard/', views.leaderboard, name='leaderboard'),
 ]

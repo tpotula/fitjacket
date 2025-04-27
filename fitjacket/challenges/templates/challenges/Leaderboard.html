@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Leaderboard</h2>
+
+    {% if current %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body text-center">
+            <h5>Your Rank: {{ current.rank }}</h5>
+            <p>Total Points: {{ current.points }}</p>
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar" role="progressbar"
+                     style="width: {{ current.progress }}%;"
+                     aria-valuenow="{{ current.progress }}"
+                     aria-valuemin="0" aria-valuemax="100">
+                    {{ current.progress }}%
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted">You haven’t completed any challenges yet.</p>
+    {% endif %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th><th>User</th><th>Points</th><th>Progress</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in ranking %}
+        <tr {% if row.username == request.user.username %}class="table-primary"{% endif %}>
+            <td>{{ row.rank }}</td>
+            <td>{{ row.username }}</td>
+            <td>{{ row.points }}</td>
+            <td>
+                <div class="progress" style="height: 12px;">
+                    <div class="progress-bar" role="progressbar"
+                         style="width: {{ row.progress }}%;"
+                         aria-valuenow="{{ row.progress }}"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

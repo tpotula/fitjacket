@@ -61,7 +61,40 @@ def complete_challenge(request, participation_id):
         completed_at__isnull=True
     )
     if request.method == 'POST':
-        p.completed_at = timezone.now()
-        p.points_awarded = p.challenge.point_value
+        p.completed_at    = timezone.now()
+        p.points_awarded  = p.challenge.point_value
         p.save()
     return redirect('challenges:list')
+
+
+@login_required
+def leaderboard(request):
+    # 1. Sum points per user
+    qs = (
+        Participation.objects
+        .filter(completed_at__isnull=False)
+        .values('user__username')
+        .annotate(total_points=Sum('points_awarded'))
+        .order_by('-total_points')
+    )
+
+    top = qs[0]['total_points'] if qs else 0
+
+    # 2. Build ranking list with progress%
+    ranking = []
+    for i, row in enumerate(qs, start=1):
+        pts = row['total_points']
+        ranking.append({
+            'rank':     i,
+            'username': row['user__username'],
+            'points':   pts,
+            'progress': int((pts / top) * 100) if top else 0,
+        })
+
+    # 3. Find current user’s entry (if any)
+    current = next((r for r in ranking if r['username'] == request.user.username), None)
+
+    return render(request, 'challenges/leaderboard.html', {
+        'ranking': ranking,
+        'current': current,
+    })

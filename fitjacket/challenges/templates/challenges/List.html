@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Available Challenges</h2>
+    <div class="row">
+        {% for c in challenges %}
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ c.title }}</h5>
+                    <p>{{ c.description|truncatewords:25 }}</p>
+                    {% if c in joined %}
+                    <button class="btn btn-secondary" disabled>Joined</button>
+                    {% else %}
+                    <a href="{% url 'challenges:join' c.pk %}" class="btn btn-primary">Join</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No challenges available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

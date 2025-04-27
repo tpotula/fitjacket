@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('accounts.urls')),
     path('workouts/', include('workouts.urls')),
+    path('challenges/', include('challenges.urls', namespace='challenges')),
 ]

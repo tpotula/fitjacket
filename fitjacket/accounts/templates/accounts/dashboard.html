@@ -37,7 +37,9 @@
 
   <!-- Group 3: Community -->
   <div class="sidebar-section-title">Community</div>
-  <a href="#" class="sidebar-link">Join Challenges</a>
+  <a href="{% url 'challenges:list' %}" class="sidebar-link">
+    Join Challenges
+  </a>
   <a href="#" class="sidebar-link">Profile</a>
 
   <!-- Footer -->
@@ -117,8 +119,11 @@
     <div class="col-md-6">
       <div class="card shadow-sm p-4 h-100">
         <h5 class="mb-3">Ongoing Challenges</h5>
-        <p class="mb-1">April Push-Up Challenge - Day 7</p>
-        <p class="mb-0">Spring Step Challenge - 70% Complete</p>
+        {% for ch in profile.joined_challenges.all %}
+        <li>{{ ch.title }}</li>
+        {% empty %}
+        <li>You haven’t joined any yet. <a href="{% url 'challenges:list' %}">Browse →</a></li>
+        {% endfor %}
       </div>
     </div>
   </div>

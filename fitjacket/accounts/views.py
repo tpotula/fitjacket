@@ -9,6 +9,10 @@ from django.contrib.messages import get_messages
 
 from .forms import LoginForm, SignupForm
 from challenges.models import Participation
+from workouts.models import WorkoutLog
+import datetime
+
+
 
 
 def auth_home(request):
@@ -100,8 +104,21 @@ def dashboard_view(request):
         user=request.user,
         completed_at__isnull=True
     )
-
+    today = datetime.date.today()
+    first_day = today.replace(day=1)
+    workouts_count = WorkoutLog.objects.filter(
+        user=request.user,
+        date__gte=first_day,
+        date__lte=today
+    ).count()
+    monthly_goal = 15
+    progress_percent = int(workouts_count / monthly_goal * 100) if monthly_goal else 0
+    if progress_percent > 100:
+        progress_percent = 100
     return render(request, 'accounts/dashboard.html', {
         'profile': profile,
         'ongoing_challenges': ongoing_challenges,
+        'monthly_goal': monthly_goal,
+        'progress_percent': progress_percent,
+        'workouts_count': workouts_count,
     })

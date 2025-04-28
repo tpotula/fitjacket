@@ -1,10 +1,15 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts               import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils import timezone
-from django.db.models import Sum, Value
-from django.db.models.functions import Coalesce
-from .models import Challenge, Participation
-from .forms import ChallengeForm
+from django.utils                   import timezone
+
+from django.db.models               import Sum, Value, F
+from django.db.models.functions     import Coalesce
+
+from .models    import Challenge, Participation
+from .forms     import ChallengeForm
+
+from accounts.models import Profile
+
 
 def is_staff(user):
     return user.is_staff
@@ -50,20 +55,50 @@ def complete_challenge(request, participation_id):
 
 @login_required
 def leaderboard(request):
-    qs = (
+    # 1) Grab each user’s total challenge points
+    ch_qs = (
         Participation.objects
         .filter(completed_at__isnull=False)
         .values('user__username')
-        .annotate(total_points=Coalesce(Sum('points_awarded'), Value(0)))
-        .order_by('-total_points')
+        .annotate(challenge_points=Sum('points_awarded'))
     )
-    top = qs[0]['total_points'] if qs else 0
+
+    # Build a dict: { username: {'challenge': X, 'workout': 0} }
+    points = {
+        row['user__username']: {
+            'challenge': row['challenge_points'] or 0,
+            'workout':   0
+        }
+        for row in ch_qs
+    }
+
+    # 2) Pull in each Profile’s workout‐earned points
+    for prof in Profile.objects.select_related('user').all():
+        u = prof.user.username
+        # ensure entry exists
+        if u not in points:
+            points[u] = {'challenge': 0, 'workout': 0}
+        points[u]['workout'] = prof.points or 0
+
+    # 3) Flatten to a list and sort by total points desc
     ranking = []
-    for i, row in enumerate(qs, start=1):
-        pts = row['total_points']
-        progress = int((pts / top) * 100) if top else 0
-        ranking.append({'rank': i, 'username': row['user__username'], 'points': pts, 'progress': progress})
+    for user, pts in points.items():
+        total = pts['challenge'] + pts['workout']
+        ranking.append({
+            'username': user,
+            'points':   total
+        })
+    ranking.sort(key=lambda x: x['points'], reverse=True)
+
+    # 4) Compute rank & progress bars
+    top = ranking[0]['points'] if ranking else 0
+    for idx, item in enumerate(ranking, start=1):
+        item['rank']     = idx
+        item['progress'] = int((item['points'] / top) * 100) if top else 0
+
+    # 5) Highlight the current user
     current = next((r for r in ranking if r['username'] == request.user.username), None)
+
     return render(request, 'challenges/leaderboard.html', {
         'ranking': ranking,
         'current': current,

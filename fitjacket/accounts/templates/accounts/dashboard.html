@@ -78,12 +78,13 @@
           <h5 class="mb-3">Monthly Goal Progress</h5>
           <div class="progress" style="height: 20px;">
             <div class="progress-bar bg-primary ps-2"
-              role="progressbar"
-              style="width: {{ progress_percent }}%;"
-              aria-valuenow="{{ workouts_count }}"
-              aria-valuemin="0"
-              aria-valuemax="{{ monthly_goal }}">
+                 role="progressbar"
+                 style="width: {{ progress_percent }}%;"
+                 aria-valuenow="{{ workouts_count }}"
+                 aria-valuemin="0"
+                 aria-valuemax="{{ monthly_goal }}">
               {{ workouts_count }} of {{ monthly_goal }} Workouts
+            </div>
           </div>
         </div>
       </div>
@@ -142,6 +143,37 @@
       </div>
     </div>
 
+    <!-- Achievements Block -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-12">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3">Achievements</h5>
+          <ul class="list-unstyled mb-3">
+            {% if milestones %}
+            {% for a in milestones %}
+            <li>{{ a.emoji }} Reached {{ a.milestone }} points</li>
+            {% endfor %}
+            {% else %}
+            <li class="text-muted">
+              No achievements yet — earn your first 100 points to unlock!
+            </li>
+            {% endif %}
+          </ul>
+          <h6 class="mb-2">Progress to {{ next_goal }} pts</h6>
+          <div class="progress" style="height:20px;">
+            <div class="progress-bar bg-success"
+                 role="progressbar"
+                 style="width: {{ achievement_progress }}%;"
+                 aria-valuenow="{{ achievement_progress }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+              {{ achievement_progress }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Tip of the Day -->
     <div class="text-center mt-4">
       <span class="badge bg-warning text-dark">Tip of the Day</span>
@@ -161,20 +193,15 @@
 <script>
   const toggle = document.getElementById('darkModeToggle');
   const html   = document.documentElement;
-
   function applyDarkMode(enabled) {
     if (enabled) html.classList.add('dark-mode');
     else          html.classList.remove('dark-mode');
   }
-
-  // Listen for changes
   toggle.addEventListener('change', () => {
     const enabled = toggle.checked;
     localStorage.setItem('darkMode', enabled);
     applyDarkMode(enabled);
   });
-
-  // Initialize on page load
   const isDark = localStorage.getItem('darkMode') === 'true';
   toggle.checked = isDark;
   applyDarkMode(isDark);
@@ -185,62 +212,62 @@
 <script>
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawCharts);
-
   function parseDate(str) {
-    // str: 'YYYY-MM-DD'
     var parts = str.split('-');
     return new Date(parts[0], parts[1] - 1, parts[2]);
   }
-
   function drawCharts() {
-    // Workouts ComboChart
+    // Workout Chart
     var workoutData = new google.visualization.DataTable();
     workoutData.addColumn('date', 'Date');
     workoutData.addColumn('number', 'Workouts');
     workoutData.addColumn('number', 'Duration (min)');
     workoutData.addRows([
-      {% for row in workout_chart|slice:'1:' %}[parseDate("{{ row.0 }}"), {{ row.1 }}, {{ row.2 }}]{% if not forloop.last %},{% endif %}{% endfor %}
+      {% for row in workout_chart|slice:'1:' %}
+        [parseDate("{{ row.0 }}"), {{ row.1 }}, {{ row.2 }}]{% if not forloop.last %},{% endif %}
+      {% endfor %}
     ]);
     var workoutOptions = {
       legend: { position: 'bottom' },
       height: 300,
       seriesType: 'bars',
-      series: {1: {type: 'line', color: '#e2431e'}},
-      hAxis: { title: 'Date', format: 'MMM d' },
-      vAxes: {
-        0: { title: 'Workouts' },
-        1: { title: 'Duration (min)' }
-      },
-      colors: ['#4285F4', '#e2431e'],
-      backgroundColor: { fill: 'transparent' },
-      chartArea: { left: 50, top: 30, width: '80%', height: '65%' },
-      fontName: 'Segoe UI',
-      fontSize: 14,
-      tooltip: { textStyle: { fontName: 'Segoe UI', fontSize: 13 } }
+      series: {1:{type:'line',color:'#e2431e'}},
+      hAxis:{title:'Date',format:'MMM d'},
+      vAxes:{0:{title:'Workouts'},1:{title:'Duration (min)'}},
+      colors:['#4285F4','#e2431e'],
+      backgroundColor:{fill:'transparent'},
+      chartArea:{left:50,top:30,width:'80%',height:'65%'},
+      fontName:'Segoe UI',fontSize:14,
+      tooltip:{textStyle:{fontName:'Segoe UI',fontSize:13}}
     };
-    var workoutChart = new google.visualization.ComboChart(document.getElementById('workout_chart'));
+    var workoutChart = new google.visualization.ComboChart(
+      document.getElementById('workout_chart')
+    );
     workoutChart.draw(workoutData, workoutOptions);
 
-    // Nutrition LineChart
+    // Meal Chart
     var mealData = new google.visualization.DataTable();
-    mealData.addColumn('date', 'Date');
-    mealData.addColumn('number', 'Calories');
+    mealData.addColumn('date','Date');
+    mealData.addColumn('number','Calories');
     mealData.addRows([
-      {% for row in meal_chart|slice:'1:' %}[parseDate("{{ row.0 }}"), {{ row.1 }}]{% if not forloop.last %},{% endif %}{% endfor %}
+      {% for row in meal_chart|slice:'1:' %}
+        [parseDate("{{ row.0 }}"), {{ row.1 }}]{% if not forloop.last %},{% endif %}
+      {% endfor %}
     ]);
     var mealOptions = {
-      legend: { position: 'bottom' },
-      height: 300,
-      hAxis: { title: 'Date', format: 'MMM d' },
-      vAxis: { title: 'Calories' },
-      colors: ['#34a853'],
-      backgroundColor: { fill: 'transparent' },
-      chartArea: { left: 50, top: 30, width: '80%', height: '65%' },
-      fontName: 'Segoe UI',
-      fontSize: 14,
-      tooltip: { textStyle: { fontName: 'Segoe UI', fontSize: 13 } }
+      legend:{position:'bottom'},
+      height:300,
+      hAxis:{title:'Date',format:'MMM d'},
+      vAxis:{title:'Calories'},
+      colors:['#34a853'],
+      backgroundColor:{fill:'transparent'},
+      chartArea:{left:50,top:30,width:'80%',height:'65%'},
+      fontName:'Segoe UI',fontSize:14,
+      tooltip:{textStyle:{fontName:'Segoe UI',fontSize:13}}
     };
-    var mealChart = new google.visualization.LineChart(document.getElementById('meal_chart'));
+    var mealChart = new google.visualization.LineChart(
+      document.getElementById('meal_chart')
+    );
     mealChart.draw(mealData, mealOptions);
   }
 </script>

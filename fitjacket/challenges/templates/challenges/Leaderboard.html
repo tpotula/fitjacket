@@ -8,14 +8,6 @@
         <div class="card-body text-center">
             <h5>Your Rank: {{ current.rank }}</h5>
             <p>Total Points: {{ current.points }}</p>
-            <div class="progress" style="height: 20px;">
-                <div class="progress-bar" role="progressbar"
-                     style="width: {{ current.progress }}%;"
-                     aria-valuenow="{{ current.progress }}"
-                     aria-valuemin="0" aria-valuemax="100">
-                    {{ current.progress }}%
-                </div>
-            </div>
         </div>
     </div>
     {% else %}
@@ -25,7 +17,9 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>#</th><th>User</th><th>Points</th><th>Progress</th>
+            <th>#</th>
+            <th>User</th>
+            <th>Points</th>
         </tr>
         </thead>
         <tbody>
@@ -34,15 +28,6 @@
             <td>{{ row.rank }}</td>
             <td>{{ row.username }}</td>
             <td>{{ row.points }}</td>
-            <td>
-                <div class="progress" style="height: 12px;">
-                    <div class="progress-bar" role="progressbar"
-                         style="width: {{ row.progress }}%;"
-                         aria-valuenow="{{ row.progress }}"
-                         aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                </div>
-            </td>
         </tr>
         {% endfor %}
         </tbody>

@@ -117,6 +117,10 @@ def dashboard_view(request):
     if progress_percent > 100:
         progress_percent = 100
 
+    # Calculate today's total workout duration
+    todays_workouts = WorkoutLog.objects.filter(user=request.user, date=today)
+    total_duration = sum(w.duration or 0 for w in todays_workouts)
+
     # --- Google Charts Data ---
     days = 7
     date_list = [(today - datetime.timedelta(days=x)) for x in range(days-1, -1, -1)]
@@ -136,8 +140,15 @@ def dashboard_view(request):
             'duration': entry['duration'] or 0
         }
     workout_chart = [['Date', 'Workouts', 'Duration']]
+    today_str = today.strftime('%Y-%m-%d')
+    today_duration = 0
+
     for d in date_strs:
-        workout_chart.append([d, workout_dict[d]['count'], workout_dict[d]['duration']])
+        count = workout_dict[d]['count']
+        duration = workout_dict[d]['duration']
+        workout_chart.append([d, count, duration])
+        if d == today_str:
+            today_duration = duration
 
     # Calories per day (last 7 days)
     meal_data = (
@@ -159,6 +170,7 @@ def dashboard_view(request):
         'monthly_goal': monthly_goal,
         'progress_percent': progress_percent,
         'workouts_count': workouts_count,
+        'workout_duration': total_duration,
         'workout_chart': workout_chart,
         'meal_chart': meal_chart,
     })

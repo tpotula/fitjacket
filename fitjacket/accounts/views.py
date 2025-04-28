@@ -1,5 +1,3 @@
-# accounts/views.py
-
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout

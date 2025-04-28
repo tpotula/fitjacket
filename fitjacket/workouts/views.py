@@ -9,6 +9,11 @@ from .models import Meal
 from .forms import MealForm
 from .models import Injury
 from .forms import InjuryForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts        import get_object_or_404
+from django.utils           import timezone
+from .models                import Reminder
+from .forms                 import ReminderForm
 
 
 def workouts_home_view(request):
@@ -184,3 +189,33 @@ def toggle_injury_status(request, injury_id):
         pass
     
     return redirect('injury_log')
+
+@login_required
+def reminders_view(request):
+    if request.method == 'POST':
+        form = ReminderForm(request.POST)
+        if form.is_valid():
+            rem        = form.save(commit=False)
+            rem.user   = request.user
+            rem.save()
+            return redirect('workouts:reminders')
+    else:
+        form = ReminderForm()
+
+    upcoming = Reminder.objects.filter(
+        user=request.user,
+        completed=False,
+        remind_at__gte=timezone.now()
+    ).order_by('remind_at')
+
+    return render(request, 'workouts/reminders.html', {
+        'form':      form,
+        'reminders': upcoming,
+    })
+
+@login_required
+def complete_reminder(request, reminder_id):
+    rem = get_object_or_404(Reminder, id=reminder_id, user=request.user)
+    rem.completed = True
+    rem.save()
+    return redirect('workouts:reminders')

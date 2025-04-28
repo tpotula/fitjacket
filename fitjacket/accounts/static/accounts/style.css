@@ -126,6 +126,11 @@ body {
 
 .sidebar-username {
   font-weight: bold;
+  color: #333333;
+}
+
+.dark-mode .sidebar-username{
+  color: #e0e0e0;
 }
 
 .sidebar-section-title {
@@ -293,15 +298,12 @@ html, body {
 
 /* Sidebar itself */
 .sidebar {
-  position: fixed;      /* stick it to the left of the screen */
-  top: 0;
-  left: 0;
-  width: 250px;         /* or whatever your sidebar width is */
-  height: 100vh;        /* full viewport height */
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;     /* enable scrolling if content is taller than viewport */
-  background-color: #1e1e1e;  /* or your theme color */
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+}
+.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  border-right: 1px solid #333;
 }
 
 /* If you have a nav list inside */

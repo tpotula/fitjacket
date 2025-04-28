@@ -1,7 +1,7 @@
 # workouts/forms.py
 
 from django import forms
-from .models import WorkoutLog, Meal, Injury
+from .models import WorkoutLog, Meal, Injury, Reminder
 
 class WorkoutLogForm(forms.ModelForm):
     class Meta:
@@ -38,4 +38,13 @@ class InjuryForm(forms.ModelForm):
             'body_part': forms.Select(attrs={'class': 'form-select'}),
             'severity': forms.Select(attrs={'class': 'form-select'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Describe your injury in detail...'}),
+        }
+
+class ReminderForm(forms.ModelForm):
+    class Meta:
+        model = Reminder
+        fields = ['text', 'remind_at']
+        widgets = {
+            'text':      forms.TextInput(attrs={'class':'form-control', 'placeholder':'e.g. Workout at 6 PM'}),
+            'remind_at': forms.DateTimeInput(attrs={'type':'datetime-local','class':'form-control'}),
         }

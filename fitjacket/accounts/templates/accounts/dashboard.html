@@ -28,7 +28,7 @@
   <div class="sidebar-section-title">Fitness</div>
   <a href="{% url 'workouts_home' %}" class="sidebar-link">Workouts</a>
   <a href="#" class="sidebar-link">View Progress</a>
-  <a href="#" class="sidebar-link">Set Reminders</a>
+  <a href="{% url 'reminders' %}" class="sidebar-link">Set Reminders</a>
 
   <div class="sidebar-section-title">Wellness</div>
   <a href="#" class="sidebar-link">Track Nutrition</a>
@@ -148,22 +148,25 @@
 <!-- Dark Mode Script -->
 <script>
   const toggle = document.getElementById('darkModeToggle');
-  const html = document.body;
+  const html   = document.documentElement;
 
   function applyDarkMode(enabled) {
     if (enabled) html.classList.add('dark-mode');
-    else html.classList.remove('dark-mode');
+    else          html.classList.remove('dark-mode');
   }
 
+  // Listen for changes
   toggle.addEventListener('change', () => {
     const enabled = toggle.checked;
     localStorage.setItem('darkMode', enabled);
     applyDarkMode(enabled);
   });
 
+  // Initialize on page load
   const isDark = localStorage.getItem('darkMode') === 'true';
   toggle.checked = isDark;
   applyDarkMode(isDark);
 </script>
+
 </body>
 </html>

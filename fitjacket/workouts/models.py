@@ -35,6 +35,16 @@ class WorkoutLog(models.Model):
     def __str__(self):
         return f"{self.exercise_name} ({self.workout_type}) on {self.date}"
 
+class Reminder(models.Model):
+    user        = models.ForeignKey(User, on_delete=models.CASCADE)
+    text        = models.CharField(max_length=200)
+    remind_at   = models.DateTimeField()
+    completed   = models.BooleanField(default=False)
+    created_at  = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.text} at {self.remind_at}"
+
 class Meal(models.Model):
     MEAL_TYPE_CHOICES = [
         ('breakfast', 'Breakfast'),

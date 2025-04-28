@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="mb-4">Set Reminders</h2>
+
+  <form method="post" class="mb-5">
+    {% csrf_token %}
+    <div class="row gx-2">
+      <div class="col-md-6">{{ form.text.label_tag }}{{ form.text }}</div>
+      <div class="col-md-4">{{ form.remind_at.label_tag }}{{ form.remind_at }}</div>
+      <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary mt-4">Add</button>
+      </div>
+    </div>
+  </form>
+
+  <h5 class="mb-3">Upcoming</h5>
+  <ul class="list-group">
+    {% for rem in reminders %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          {{ rem.text }}
+          <small class="text-muted">at {{ rem.remind_at|date:"M d, Y H:i" }}</small>
+        </div>
+        <a href="{% url 'workouts:complete_reminder' rem.id %}"
+           class="btn btn-sm btn-outline-success">Done</a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted">No reminders set.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

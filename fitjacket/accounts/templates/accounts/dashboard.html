@@ -31,7 +31,7 @@
   <a href="{% url 'reminders' %}" class="sidebar-link">Set Reminders</a>
 
   <div class="sidebar-section-title">Wellness</div>
-  <a href="#" class="sidebar-link">Track Nutrition</a>
+  <a href="{% url 'nutrition_tracking' %}" class="sidebar-link">Track Nutrition</a>
   <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
@@ -59,22 +59,14 @@
       <h2 class="fw-bold text-primary">Fit Jacket</h2>
     </div>
 
-    <!-- Summary & Weekly -->
-    <div class="row g-4 mb-4">
+    <!-- Summary Row -->
+    <div class="row g-4 mb-4 d-flex justify-content-center">
       <div class="col-lg-4">
         <div class="card shadow-sm p-4 h-100 text-center">
           <h5 class="mb-3">Today's Summary</h5>
           <p class="mb-1"><strong>Steps:</strong> 6,843</p>
           <p class="mb-1"><strong>Calories Burned:</strong> 450</p>
           <p class="mb-1"><strong>Workout Duration:</strong> 45 min</p>
-        </div>
-      </div>
-      <div class="col-lg-8">
-        <div class="card shadow-sm p-4 h-100">
-          <h5 class="mb-3">Weekly Activity</h5>
-          <div class="bg-light rounded text-center py-5 h-100 d-flex align-items-center justify-content-center">
-            <em class="text-muted">Weekly Activity Graph Placeholder</em>
-          </div>
         </div>
       </div>
     </div>
@@ -92,6 +84,26 @@
               aria-valuemin="0"
               aria-valuemax="{{ monthly_goal }}">
               {{ workouts_count }} of {{ monthly_goal }} Workouts
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Graphs Row -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3 text-center">Workouts Progress (Last 7 Days)</h5>
+          <div class="bg-light rounded p-3">
+            <div id="workout_chart"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="mb-3 text-center">Calories Consumed (Last 7 Days)</h5>
+          <div class="bg-light rounded p-3">
+            <div id="meal_chart"></div>
           </div>
         </div>
       </div>
@@ -166,6 +178,71 @@
   const isDark = localStorage.getItem('darkMode') === 'true';
   toggle.checked = isDark;
   applyDarkMode(isDark);
+</script>
+
+<!-- Google Charts Loader -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawCharts);
+
+  function parseDate(str) {
+    // str: 'YYYY-MM-DD'
+    var parts = str.split('-');
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function drawCharts() {
+    // Workouts ComboChart
+    var workoutData = new google.visualization.DataTable();
+    workoutData.addColumn('date', 'Date');
+    workoutData.addColumn('number', 'Workouts');
+    workoutData.addColumn('number', 'Duration (min)');
+    workoutData.addRows([
+      {% for row in workout_chart|slice:'1:' %}[parseDate("{{ row.0 }}"), {{ row.1 }}, {{ row.2 }}]{% if not forloop.last %},{% endif %}{% endfor %}
+    ]);
+    var workoutOptions = {
+      legend: { position: 'bottom' },
+      height: 300,
+      seriesType: 'bars',
+      series: {1: {type: 'line', color: '#e2431e'}},
+      hAxis: { title: 'Date', format: 'MMM d' },
+      vAxes: {
+        0: { title: 'Workouts' },
+        1: { title: 'Duration (min)' }
+      },
+      colors: ['#4285F4', '#e2431e'],
+      backgroundColor: { fill: 'transparent' },
+      chartArea: { left: 50, top: 30, width: '80%', height: '65%' },
+      fontName: 'Segoe UI',
+      fontSize: 14,
+      tooltip: { textStyle: { fontName: 'Segoe UI', fontSize: 13 } }
+    };
+    var workoutChart = new google.visualization.ComboChart(document.getElementById('workout_chart'));
+    workoutChart.draw(workoutData, workoutOptions);
+
+    // Nutrition LineChart
+    var mealData = new google.visualization.DataTable();
+    mealData.addColumn('date', 'Date');
+    mealData.addColumn('number', 'Calories');
+    mealData.addRows([
+      {% for row in meal_chart|slice:'1:' %}[parseDate("{{ row.0 }}"), {{ row.1 }}]{% if not forloop.last %},{% endif %}{% endfor %}
+    ]);
+    var mealOptions = {
+      legend: { position: 'bottom' },
+      height: 300,
+      hAxis: { title: 'Date', format: 'MMM d' },
+      vAxis: { title: 'Calories' },
+      colors: ['#34a853'],
+      backgroundColor: { fill: 'transparent' },
+      chartArea: { left: 50, top: 30, width: '80%', height: '65%' },
+      fontName: 'Segoe UI',
+      fontSize: 14,
+      tooltip: { textStyle: { fontName: 'Segoe UI', fontSize: 13 } }
+    };
+    var mealChart = new google.visualization.LineChart(document.getElementById('meal_chart'));
+    mealChart.draw(mealData, mealOptions);
+  }
 </script>
 
 </body>

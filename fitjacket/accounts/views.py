@@ -10,11 +10,9 @@ from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.shortcuts import render, redirect
 import datetime
-
 from .forms import LoginForm, SignupForm
 from challenges.models import Participation
 from workouts.models import WorkoutLog, Meal
-
 import requests
 from django.conf import settings
 

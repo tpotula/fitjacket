@@ -138,3 +138,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Google Oauth2.0 credentials
+import os
+GOOGLE_CLIENT_ID = os.environ.get("752173492871-uk8lvt50psrhfujab95v1loeukq1dr4j.apps.googleusercontent.com")
+GOOGLE_CLIENT_SECRET = os.environ.get("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")

@@ -6,10 +6,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.messages import get_messages
+from django.db import models
 
 from .forms import LoginForm, SignupForm
 from challenges.models import Participation
-from workouts.models import WorkoutLog
+from workouts.models import WorkoutLog, Meal
 import datetime
 
 
@@ -115,10 +116,49 @@ def dashboard_view(request):
     progress_percent = int(workouts_count / monthly_goal * 100) if monthly_goal else 0
     if progress_percent > 100:
         progress_percent = 100
+
+    # --- Google Charts Data ---
+    days = 7
+    date_list = [(today - datetime.timedelta(days=x)) for x in range(days-1, -1, -1)]
+    date_strs = [d.strftime('%Y-%m-%d') for d in date_list]
+
+    # Workouts per day (last 7 days)
+    workout_data = (
+        WorkoutLog.objects.filter(user=request.user, date__gte=date_list[0], date__lte=date_list[-1])
+        .values('date')
+        .annotate(count=models.Count('id'), duration=models.Sum('duration'))
+    )
+    workout_dict = {d: {'count': 0, 'duration': 0} for d in date_strs}
+    for entry in workout_data:
+        key = entry['date'].strftime('%Y-%m-%d')
+        workout_dict[key] = {
+            'count': entry['count'],
+            'duration': entry['duration'] or 0
+        }
+    workout_chart = [['Date', 'Workouts', 'Duration']]
+    for d in date_strs:
+        workout_chart.append([d, workout_dict[d]['count'], workout_dict[d]['duration']])
+
+    # Calories per day (last 7 days)
+    meal_data = (
+        Meal.objects.filter(user=request.user, date__gte=date_list[0], date__lte=date_list[-1])
+        .values('date')
+        .annotate(calories=models.Sum('calories'))
+    )
+    meal_dict = {d: 0 for d in date_strs}
+    for entry in meal_data:
+        key = entry['date'].strftime('%Y-%m-%d')
+        meal_dict[key] = entry['calories'] or 0
+    meal_chart = [['Date', 'Calories']]
+    for d in date_strs:
+        meal_chart.append([d, meal_dict[d]])
+
     return render(request, 'accounts/dashboard.html', {
         'profile': profile,
         'ongoing_challenges': ongoing_challenges,
         'monthly_goal': monthly_goal,
         'progress_percent': progress_percent,
         'workouts_count': workouts_count,
+        'workout_chart': workout_chart,
+        'meal_chart': meal_chart,
     })

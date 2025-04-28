@@ -161,17 +161,25 @@ def dashboard_view(request):
     )
 
     # Monthly workout progress
-    today      = datetime.date.today()
-    first_day  = today.replace(day=1)
-    workouts_count = WorkoutLog.objects.filter(
+    # Monthly workout progress with rollover
+    today       = datetime.date.today()
+    first_day   = today.replace(day=1)
+    total_done  = WorkoutLog.objects.filter(
         user=request.user,
         date__gte=first_day,
         date__lte=today
     ).count()
-    monthly_goal     = 15
-    progress_percent = int(workouts_count / monthly_goal * 100) if monthly_goal else 0
-    if progress_percent > 100:
-        progress_percent = 100
+
+    base_goal      = 15
+    cycles         = total_done // base_goal           # how many full goals met
+    workouts_count = total_done - (base_goal * cycles) # carry-over count
+    monthly_goal   = base_goal * (cycles + 1)          # new target
+
+    # percent into the current goal
+    progress_percent = (
+        int(workouts_count / monthly_goal * 100)
+        if monthly_goal else 0
+    )
 
     # Prepare chart data (last 7 days)
     days      = 7

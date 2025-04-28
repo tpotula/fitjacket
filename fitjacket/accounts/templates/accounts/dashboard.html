@@ -69,20 +69,6 @@
       </div>
     </div>
 <!-- Connect to Google Fit -->
-<div class="row g-4 mb-4 d-flex justify-content-center">
-  <div class="col-lg-4">
-    <div class="card shadow-sm p-4 h-100 text-center">
-      <h5 class="mb-3">Sync Your Workouts</h5>
-      {% if user.profile.google_fit_access_token %}
-        <p>Google Fit is already connected ✅</p>
-      {% else %}
-        <a href="{% url 'google_fit_connect' %}" class="btn btn-primary">
-          Connect to Google Fit
-        </a>
-      {% endif %}
-    </div>
-  </div>
-</div>
 
     <!-- Monthly Goal Progress -->
     <div class="row justify-content-center mb-4">

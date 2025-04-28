@@ -15,6 +15,8 @@ from .forms import LoginForm, SignupForm
 from challenges.models import Participation
 from workouts.models import WorkoutLog, Meal
 
+import requests
+from django.conf import settings
 
 def auth_home(request):
     """
@@ -258,3 +260,50 @@ def achievements_view(request):
         'next_goal':    profile.next_goal,
         'progress':     progress,
     })
+
+@login_required # googlefitapi
+def google_fit_connect(request):
+    # redirect user to Google for authorization
+    base_url = "https://accounts.google.com/o/oauth2/v2/auth"
+    redirect_uri = "http://localhost:8000/accounts/google/callback/"
+    client_id = settings.GOOGLE_CLIENT_ID
+    scope = "https://www.googleapis.com/auth/fitness.activity.write"
+    auth_url = (
+        f"{base_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&access_type=offline&prompt=consent"
+    )
+    return redirect(auth_url)
+
+@login_required
+def google_fit_callback(request):
+    # Google redirects back with a ?code=...
+    code = request.GET.get('code')
+    if not code:
+        return render(request, "error.html", {"message": "No code returned from Google"})
+
+    token_url = "https://oauth2.googleapis.com/token"
+    redirect_uri = "http://localhost:8000/accounts/google/callback/"
+    client_id = settings.GOOGLE_CLIENT_ID
+    client_secret = settings.GOOGLE_CLIENT_SECRET
+
+    data = {
+        'code': code,
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri,
+        'grant_type': 'authorization_code',
+    }
+
+    # exchange authorization code for access token
+    response = requests.post(token_url, data=data)
+    token_info = response.json()
+
+    access_token = token_info.get('access_token')
+    refresh_token = token_info.get('refresh_token')
+
+    # save tokens to user Profile
+    profile = request.user.profile
+    profile.google_fit_access_token = access_token
+    profile.google_fit_refresh_token = refresh_token
+    profile.save()
+
+    return redirect('workouts_home')

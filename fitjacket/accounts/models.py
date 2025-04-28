@@ -11,3 +11,5 @@ class Profile(models.Model):
         blank=True,
         related_name='participants'
     )
+    google_fit_access_token = models.TextField(blank=True, null=True)
+    google_fit_refresh_token = models.TextField(blank=True, null=True)

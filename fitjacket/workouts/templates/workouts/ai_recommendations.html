@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center fw-bold text-primary mb-4">AI Workout Recommendations</h2>
+
+    <!-- User Profile Summary -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Your Fitness Profile</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Current Level:</strong> {{ user_level|title }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Recent Workouts:</strong> {{ recent_workouts|length }} in the last week</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workout Preferences Form -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Your Workout Preferences</h4>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="workoutType" class="form-label">Preferred Workout Type</label>
+                        <select class="form-select" id="workoutType" name="workout_type" required>
+                            <option value="">Choose...</option>
+                            <option value="strength">Strength Training</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="hiit">HIIT</option>
+                            <option value="yoga">Yoga</option>
+                            <option value="flexibility">Flexibility</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="duration" class="form-label">Preferred Duration (minutes)</label>
+                        <select class="form-select" id="duration" name="duration" required>
+                            <option value="">Choose...</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="difficulty" class="form-label">Difficulty Level</label>
+                        <select class="form-select" id="difficulty" name="difficulty" required>
+                            <option value="">Choose...</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="athlete">Athlete</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="equipment" class="form-label">Available Equipment</label>
+                        <select class="form-select" id="equipment" name="equipment" multiple>
+                            <option value="none">No Equipment</option>
+                            <option value="dumbbells">Dumbbells</option>
+                            <option value="resistance_bands">Resistance Bands</option>
+                            <option value="yoga_mat">Yoga Mat</option>
+                            <option value="pull_up_bar">Pull-up Bar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Get AI Recommendations</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Recommendations Display -->
+    {% if recommendations %}
+    <div class="row">
+        {% for workout in recommendations %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ workout.title }}</h5>
+                    <p class="card-text">{{ workout.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ workout.duration }} min</span>
+                        <span class="badge bg-secondary">{{ workout.difficulty }}</span>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Exercises:</h6>
+                        <ul class="list-unstyled">
+                            {% for exercise in workout.exercises %}
+                            <li class="mb-2">
+                                <strong>{{ exercise.name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ exercise.sets }} sets × {{ exercise.reps }} reps</small>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Progression Plan:</h6>
+                        <p class="text-muted small">{{ workout.progression }}</p>
+                    </div>
+                    <div class="mt-3">
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="save_workout" value="1">
+                            <input type="hidden" name="workout_title" value="{{ workout.title }}">
+                            <input type="hidden" name="workout_description" value="{{ workout.description }}">
+                            <input type="hidden" name="workout_type" value="{{ workout.difficulty|lower }}">
+                            <input type="hidden" name="duration" value="{{ workout.duration }}">
+                            <button type="submit" class="btn btn-outline-primary btn-sm">Save to My Workouts</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>
+{% endblock %} 

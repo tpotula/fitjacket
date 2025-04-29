@@ -228,3 +228,127 @@ def complete_reminder(request, reminder_id):
     reminder_manager = ReminderManager()
     reminder_manager.mark_complete(reminder_id, request.user)
     return redirect('workouts:reminders')
+
+@login_required
+def ai_recommendations_view(request):
+    # Get user's profile and workout history
+    try:
+        profile = Profile.objects.get(user=request.user)
+        user_level = profile.level
+    except Profile.DoesNotExist:
+        user_level = 'beginner'  # Default to beginner if no profile exists
+
+    # Get user's recent workout history
+    recent_workouts = WorkoutLog.objects.filter(
+        user=request.user
+    ).order_by('-date')[:5]  # Get last 5 workouts
+
+    if request.method == 'POST':
+        # Check if this is a save workout request
+        if 'save_workout' in request.POST:
+            workout_data = request.POST.get('workout_data')
+            if workout_data:
+                # Create a new workout log entry
+                WorkoutLog.objects.create(
+                    user=request.user,
+                    workout_type=request.POST.get('workout_type', 'strength'),
+                    exercise_name=request.POST.get('workout_title'),
+                    duration=request.POST.get('duration'),
+                    notes=request.POST.get('workout_description'),
+                    date=timezone.now().date()
+                )
+                return redirect('workouts:workout_log')
+
+        # Get form data for recommendations
+        workout_type = request.POST.get('workout_type')
+        duration = request.POST.get('duration')
+        difficulty = request.POST.get('difficulty')
+        equipment = request.POST.getlist('equipment')
+
+        # Generate recommendations based on user level
+        recommendations = []
+        
+        # Beginner-focused recommendations
+        if user_level == 'beginner':
+            recommendations.extend([
+                {
+                    'title': 'Beginner Full Body Strength',
+                    'description': 'A gentle introduction to strength training, perfect for beginners.',
+                    'duration': 30,
+                    'difficulty': 'Beginner',
+                    'exercises': [
+                        {'name': 'Bodyweight Squats', 'sets': 3, 'reps': '10-12'},
+                        {'name': 'Push-ups (Knee)', 'sets': 3, 'reps': '8-10'},
+                        {'name': 'Plank', 'sets': 3, 'reps': '20-30 seconds'},
+                    ],
+                    'progression': 'Increase reps by 2 each week'
+                },
+                {
+                    'title': 'Beginner Cardio',
+                    'description': 'Low-impact cardio workout to build endurance safely.',
+                    'duration': 20,
+                    'difficulty': 'Beginner',
+                    'exercises': [
+                        {'name': 'Walking', 'sets': 1, 'reps': '5 minutes'},
+                        {'name': 'Light Jogging', 'sets': 1, 'reps': '2 minutes'},
+                        {'name': 'Walking', 'sets': 1, 'reps': '5 minutes'},
+                    ],
+                    'progression': 'Increase jogging time by 1 minute weekly'
+                }
+            ])
+        
+        # Athlete-focused recommendations
+        else:
+            recommendations.extend([
+                {
+                    'title': 'Athlete Strength Training',
+                    'description': 'Advanced strength training for athletes.',
+                    'duration': 45,
+                    'difficulty': 'Athlete',
+                    'exercises': [
+                        {'name': 'Push-ups', 'sets': 4, 'reps': '15-20'},
+                        {'name': 'Squats', 'sets': 4, 'reps': '20-25'},
+                        {'name': 'Plank', 'sets': 4, 'reps': '60 seconds'},
+                    ],
+                    'progression': 'Add 1 set each week'
+                },
+                {
+                    'title': 'Athlete HIIT',
+                    'description': 'High-intensity interval training for athletes.',
+                    'duration': 30,
+                    'difficulty': 'Athlete',
+                    'exercises': [
+                        {'name': 'Jumping Jacks', 'sets': 4, 'reps': '60 seconds'},
+                        {'name': 'Mountain Climbers', 'sets': 4, 'reps': '45 seconds'},
+                        {'name': 'Burpees', 'sets': 4, 'reps': '60 seconds'},
+                    ],
+                    'progression': 'Increase work intervals by 5 seconds weekly'
+                }
+            ])
+
+        # Add variety based on workout history
+        if recent_workouts:
+            last_workout_type = recent_workouts[0].workout_type
+            if last_workout_type == 'strength':
+                recommendations.append({
+                    'title': 'Active Recovery',
+                    'description': 'Light workout to complement your strength training.',
+                    'duration': 20,
+                    'difficulty': 'Beginner',
+                    'exercises': [
+                        {'name': 'Light Stretching', 'sets': 1, 'reps': '5 minutes'},
+                        {'name': 'Walking', 'sets': 1, 'reps': '10 minutes'},
+                        {'name': 'Yoga Flow', 'sets': 1, 'reps': '5 minutes'},
+                    ],
+                    'progression': 'Gradually increase stretching duration'
+                })
+    else:
+        recommendations = None
+
+    context = {
+        'recommendations': recommendations,
+        'user_level': user_level,
+        'recent_workouts': recent_workouts,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    }
+    return render(request, 'workouts/ai_recommendations.html', context)

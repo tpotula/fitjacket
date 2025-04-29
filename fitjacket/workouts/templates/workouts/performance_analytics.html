@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load workout_filters %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center fw-bold text-primary mb-4">Performance Analytics</h2>
+
+  <!-- Key Metrics Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Total Workouts</h5>
+          <h2 class="display-4">{{ total_workouts }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Total Duration</h5>
+          <h2 class="display-4">{{ total_duration }}m</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Avg. Duration</h5>
+          <h2 class="display-4">{{ avg_duration }}m</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Progress -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Weekly Progress</h5>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Week</th>
+              <th>Workouts</th>
+              <th>Total Duration</th>
+              <th>Progress</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for week in weekly_workouts %}
+            <tr>
+              <td>Week {{ week.week }}</td>
+              <td>{{ week.count }}</td>
+              <td>{{ week.total_duration }}m</td>
+              <td>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" 
+                       style="width: {{ week.count|multiply:10 }}%">
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workout Type Distribution -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Workout Type Distribution</h5>
+      <div class="row">
+        {% for type in workout_types %}
+        <div class="col-md-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ type.workout_type|title }}</span>
+            <span class="badge bg-primary">{{ type.count }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Monthly Stats -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Monthly Progression</h5>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Workouts</th>
+              <th>Total Duration</th>
+              <th>Avg Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for month in monthly_workouts %}
+            <tr>
+              <td>{{ month.month|month_name }}</td>
+              <td>{{ month.count }}</td>
+              <td>{{ month.total_duration }}m</td>
+              <td>{{ month.avg_duration|floatformat:1 }}m</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

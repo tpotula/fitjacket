@@ -1,21 +1,25 @@
 import google.generativeai as genai
+from django.conf import settings
 import json
 import logging
 import re
 
 logger = logging.getLogger(__name__)
 
+
 class WorkoutAIService:
     def __init__(self):
+        # Configure the API key from Django settings
+        genai.configure(api_key=settings.GEMINI_API_KEY)
         try:
             # Log available models for debugging
             logger.info("Available models:")
             for m in genai.list_models():
                 logger.info(f"Model: {m.name}")
-            
-            # Use a supported model from the available models list
+
+            # Use a supported model
             self.model = genai.GenerativeModel('gemini-2.0-flash-lite')
-            
+
             # Configure generation parameters for more consistent output
             self.generation_config = {
                 "temperature": 0.7,
@@ -23,7 +27,7 @@ class WorkoutAIService:
                 "top_k": 40,
                 "max_output_tokens": 2048,
             }
-            
+
             logger.info("Successfully initialized Gemini AI model")
         except Exception as e:
             logger.error(f"Error initializing Gemini AI: {str(e)}")
@@ -46,24 +50,25 @@ class WorkoutAIService:
         """Generate content with retry logic and proper error handling."""
         for attempt in range(max_retries):
             try:
-                response = self.model.generate_content(
-                    prompt,
+                response = self.model.generate_text(
+                    prompt=prompt,
                     generation_config=self.generation_config
                 )
-                
+                logger.debug("Raw Gemini response text:\n%s", response.text)
+
                 if not response.text:
                     logger.error("Empty response from model")
                     continue
-                    
+
                 # Clean and parse the response
                 result = self._clean_json_response(response.text)
                 if result:
                     return result
-                    
+
                 logger.warning(f"Attempt {attempt + 1}: Invalid JSON response")
             except Exception as e:
                 logger.error(f"Attempt {attempt + 1} failed: {str(e)}")
-                
+
         return None
 
     def generate_workout_plan(self, user_level, recent_workouts, equipment, duration, workout_type):
@@ -104,14 +109,14 @@ class WorkoutAIService:
             """
 
             logger.info(f"Generating workout plan with prompt: {prompt}")
-            
+
             # Generate response with retry logic
             workout_plan = self._generate_with_retry(prompt)
-            
+
             if workout_plan:
                 logger.info(f"Successfully generated workout plan: {workout_plan}")
                 return workout_plan
-                
+
             # Return default workout plan if AI fails
             logger.warning("Using default workout plan due to AI generation failure")
             return {
@@ -180,14 +185,14 @@ class WorkoutAIService:
             """
 
             logger.info(f"Generating workout variation with prompt: {prompt}")
-            
+
             # Generate response with retry logic
             workout_variation = self._generate_with_retry(prompt)
-            
+
             if workout_variation:
                 logger.info(f"Successfully generated workout variation: {workout_variation}")
                 return workout_variation
-                
+
             logger.error("Failed to generate workout variation")
             return None
         except Exception as e:
@@ -229,16 +234,16 @@ class WorkoutAIService:
             """
 
             logger.info(f"Generating progression plan with prompt: {prompt}")
-            
+
             # Generate response with retry logic
             progression_plan = self._generate_with_retry(prompt)
-            
+
             if progression_plan:
                 logger.info(f"Successfully generated progression plan: {progression_plan}")
                 return progression_plan
-                
+
             logger.error("Failed to generate progression plan")
             return None
         except Exception as e:
             logger.error(f"Error generating progression plan: {str(e)}")
-            return None 
+            return None

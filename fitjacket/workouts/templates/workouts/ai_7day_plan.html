@@ -3,20 +3,20 @@
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>AI Workout Recommendations</h2>
-        <a href="{% url 'workouts:ai_7day_plan' %}" class="btn btn-primary">Generate 7-Day Plan</a>
+        <h2>7-Day Workout Plan Generator</h2>
+        <a href="{% url 'workouts:ai_recommendations' %}" class="btn btn-primary">Generate Single Workout</a>
     </div>
     
     <!-- Workout Preferences Form -->
     <div class="card mb-4">
         <div class="card-body">
-            <h4 class="card-title">Get a Workout</h4>
+            <h4 class="card-title">Create Your 7-Day Plan</h4>
             <form method="post" class="mt-3">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="workout_type">Workout Type</label>
+                            <label for="workout_type">Primary Workout Type</label>
                             <select name="workout_type" id="workout_type" class="form-control" required>
                                 <option value="strength" {% if request.POST.workout_type == 'strength' %}selected{% endif %}>Strength Training</option>
                                 <option value="cardio" {% if request.POST.workout_type == 'cardio' %}selected{% endif %}>Cardio</option>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="duration">Duration (minutes)</label>
+                            <label for="duration">Daily Duration (minutes)</label>
                             <input type="number" name="duration" id="duration" class="form-control" min="15" max="180" value="{{ request.POST.duration|default:'45' }}" required>
                         </div>
                     </div>
@@ -55,27 +55,42 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Generate Workout</button>
+                <button type="submit" class="btn btn-primary mt-3">Generate 7-Day Plan</button>
             </form>
         </div>
     </div>
     
-    <!-- Workout Recommendations -->
-    {% if recommendations %}
-        {% for recommendation in recommendations %}
-        <div class="card mb-4">
-            <div class="card-header">
-                <h3 class="card-title">{{ recommendation.title }}</h3>
-                <span class="badge {% if recommendation.type == 'strength' %}bg-primary{% elif recommendation.type == 'cardio' %}bg-success{% else %}bg-info{% endif %}">
-                    {{ recommendation.type|title }}
-                </span>
+    <!-- 7-Day Workout Plan -->
+    {% if workout_plan %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">{{ workout_plan.title }}</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ workout_plan.description }}</p>
+            
+            <div class="mt-4">
+                <h4>Weekly Tips</h4>
+                <ul class="list-group">
+                    {% for tip in workout_plan.weekly_tips %}
+                    <li class="list-group-item">{{ tip }}</li>
+                    {% endfor %}
+                </ul>
             </div>
-            <div class="card-body">
-                <p class="card-text">{{ recommendation.description }}</p>
-                
-                {% if recommendation.details %}
-                    <div class="mt-4">
-                        <h4>Exercises</h4>
+            
+            <div class="mt-4">
+                <h4>Daily Workouts</h4>
+                {% for day in workout_plan.days %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ day.title }}</h5>
+                        <span class="badge {% if day.type == 'strength' %}bg-primary{% elif day.type == 'cardio' %}bg-success{% else %}bg-info{% endif %}">
+                            {{ day.type|title }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ day.description }}</p>
+                        
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -87,7 +102,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for exercise in recommendation.details.exercises %}
+                                    {% for exercise in day.exercises %}
                                     <tr>
                                         <td>{{ exercise.name }}</td>
                                         <td>{{ exercise.sets }}</td>
@@ -99,19 +114,20 @@
                             </table>
                         </div>
                         
-                        <div class="mt-4">
-                            <h4>Tips</h4>
+                        <div class="mt-3">
+                            <h6>Day Tips</h6>
                             <ul class="list-group">
-                                {% for tip in recommendation.details.tips %}
+                                {% for tip in day.tips %}
                                 <li class="list-group-item">{{ tip }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
-                {% endif %}
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
+    </div>
     {% endif %}
 </div>
 {% endblock %} 

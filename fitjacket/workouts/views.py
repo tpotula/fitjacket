@@ -20,6 +20,7 @@ from .models import WorkoutPlanDay
 from .ai_service import WorkoutAIService
 from django.db.models import Avg, Count, Sum
 from django.db.models.functions import ExtractWeek, ExtractMonth
+import json
 
 
 def workouts_home_view(request):
@@ -296,80 +297,227 @@ def ai_recommendations_view(request):
     recent_workouts = WorkoutLog.objects.filter(user=request.user).order_by('-date')[:5]
     
     # Get user's level and equipment
-    user_level = profile.fitness_level
-    equipment = profile.equipment_available
+    user_level = profile.level
+    equipment = profile.equipment if hasattr(profile, 'equipment') else []
     
     # Initialize AI service
     ai_service = WorkoutAIService()
     
-    # Get active workout plan if any
-    active_plan = WorkoutPlan.objects.filter(user=request.user, is_active=True).first()
-    
     # Generate recommendations using AI
     recommendations = []
     
-    # If user is a beginner and doesn't have an active plan, create one
-    if user_level == 'beginner' and not active_plan:
-        # Create a new workout plan
-        active_plan = WorkoutPlan.objects.create(
-            user=request.user,
-            plan_type='beginner',
-            start_date=timezone.now().date(),
-            current_day=1
+    if request.method == 'POST':
+        # Get user preferences from form
+        workout_type = request.POST.get('workout_type', 'strength')
+        duration = int(request.POST.get('duration', 45))
+        focus_area = request.POST.get('focus_area', 'full_body')
+        intensity = request.POST.get('intensity', 'medium')
+        
+        # Generate workout based on user preferences
+        workout_plan = ai_service.generate_workout_plan(
+            user_level=user_level,
+            recent_workouts=recent_workouts,
+            equipment=equipment,
+            duration=duration,
+            workout_type=workout_type,
+            focus_area=focus_area,
+            intensity=intensity
         )
         
-        # Generate a 7-day workout plan using AI
-        for day in range(1, 8):
-            workout_plan = ai_service.generate_workout_plan(
-                user_level=user_level,
-                recent_workouts=recent_workouts,
-                equipment=equipment,
-                duration=30,  # Default duration for beginners
-                workout_type='strength' if day % 2 == 1 else 'cardio'
-            )
-            
-            if workout_plan:
-                # Create workout plan day
-                WorkoutPlanDay.objects.create(
-                    plan=active_plan,
-                    day_number=day,
-                    workout_type='strength' if day % 2 == 1 else 'cardio',  # Set workout type based on day
-                    exercises=workout_plan['exercises'],
-                    duration=workout_plan['duration'],
-                    notes=workout_plan['description']
-                )
-    
-    # Get current day's workout if there's an active plan
-    if active_plan:
-        try:
-            current_day = WorkoutPlanDay.objects.get(
-                plan=active_plan,
-                day_number=active_plan.current_day
-            )
+        if workout_plan:
             recommendations.append({
-                'title': f'Day {active_plan.current_day} Workout',
-                'description': current_day.notes,
-                'type': 'workout_plan'
+                'title': workout_plan['title'],
+                'description': workout_plan['description'],
+                'type': workout_type,
+                'details': {
+                    'exercises': workout_plan['exercises'],
+                    'tips': workout_plan['tips']
+                }
             })
-        except WorkoutPlanDay.DoesNotExist:
-            pass
-    
-    # Beginner-focused recommendations
-    if user_level == 'beginner':
-        if not recent_workouts:
-            recommendations.append({
-                'title': 'Start with Basic Exercises',
-                'description': 'Begin with bodyweight exercises like push-ups, squats, and lunges.',
-                'type': 'beginner_tip'
-            })
-        elif recent_workouts[0].workout_type == 'strength':
-            recommendations.append({
-                'title': 'Try Cardio',
-                'description': 'Add some cardio to your routine for better overall fitness.',
-                'type': 'workout_suggestion'
-            })
-    
+
     return render(request, 'workouts/ai_recommendations.html', {
         'recommendations': recommendations,
-        'active_plan': active_plan
+        'user_level': user_level,
+        'recent_workouts': recent_workouts,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def create_workout_plan_view(request):
+    if request.method == 'POST':
+        # Get form data
+        plan_type = request.POST.get('plan_type')
+        num_days = int(request.POST.get('num_days', 7))
+        duration = int(request.POST.get('duration', 45))
+        workout_type = request.POST.get('workout_type', 'strength')
+        
+        # Get user's profile and recent workouts
+        profile = request.user.profile
+        recent_workouts = WorkoutLog.objects.filter(
+            user=request.user
+        ).order_by('-date')[:5]
+        
+        # Get available equipment from user's profile
+        equipment = profile.equipment if hasattr(profile, 'equipment') else []
+        
+        # Generate workout plan using AI
+        ai_service = WorkoutAIService()
+        workout_plan_data = ai_service.generate_multi_day_workout_plan(
+            user_level=profile.level,
+            recent_workouts=list(recent_workouts),
+            equipment=equipment,
+            duration=duration,
+            workout_type=workout_type,
+            num_days=num_days
+        )
+        
+        # Create workout plan
+        workout_plan = WorkoutPlan.objects.create(
+            user=request.user,
+            plan_type=plan_type,
+            start_date=timezone.now().date(),
+            is_active=True
+        )
+        
+        # Create workout plan days
+        for day_data in workout_plan_data['days']:
+            WorkoutPlanDay.objects.create(
+                plan=workout_plan,
+                day_number=day_data['day_number'],
+                workout_type=day_data['workout_type'],
+                exercises=day_data['exercises'],
+                duration=day_data['duration'],
+                notes=day_data['notes']
+            )
+        
+        return redirect('workouts:view_workout_plan', plan_id=workout_plan.id)
+    
+    return render(request, 'workouts/create_workout_plan.html', {
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def view_workout_plan_view(request, plan_id):
+    workout_plan = get_object_or_404(WorkoutPlan, id=plan_id, user=request.user)
+    days = workout_plan.days.all().order_by('day_number')
+    
+    return render(request, 'workouts/view_workout_plan.html', {
+        'workout_plan': workout_plan,
+        'days': days,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def add_day_to_plan_view(request, plan_id):
+    workout_plan = get_object_or_404(WorkoutPlan, id=plan_id, user=request.user)
+    
+    if request.method == 'POST':
+        # Get form data
+        workout_type = request.POST.get('workout_type')
+        duration = int(request.POST.get('duration', 45))
+        exercises = json.loads(request.POST.get('exercises', '[]'))
+        notes = request.POST.get('notes', '')
+        
+        # Get the next day number
+        next_day = workout_plan.days.count() + 1
+        
+        # Create the new day
+        WorkoutPlanDay.objects.create(
+            plan=workout_plan,
+            day_number=next_day,
+            workout_type=workout_type,
+            exercises=exercises,
+            duration=duration,
+            notes=notes
+        )
+        
+        return redirect('workouts:view_workout_plan', plan_id=plan_id)
+    
+    return render(request, 'workouts/add_day_to_plan.html', {
+        'workout_plan': workout_plan,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def edit_workout_plan_day_view(request, plan_id, day_number):
+    workout_plan = get_object_or_404(WorkoutPlan, id=plan_id, user=request.user)
+    day = get_object_or_404(WorkoutPlanDay, plan=workout_plan, day_number=day_number)
+    
+    if request.method == 'POST':
+        # Update day data
+        day.workout_type = request.POST.get('workout_type')
+        day.duration = int(request.POST.get('duration', 45))
+        day.exercises = json.loads(request.POST.get('exercises', '[]'))
+        day.notes = request.POST.get('notes', '')
+        day.save()
+        
+        return redirect('workouts:view_workout_plan', plan_id=plan_id)
+    
+    return render(request, 'workouts/edit_workout_plan_day.html', {
+        'workout_plan': workout_plan,
+        'day': day,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def delete_workout_plan_day_view(request, plan_id, day_number):
+    workout_plan = get_object_or_404(WorkoutPlan, id=plan_id, user=request.user)
+    day = get_object_or_404(WorkoutPlanDay, plan=workout_plan, day_number=day_number)
+    
+    if request.method == 'POST':
+        day.delete()
+        
+        # Reorder remaining days
+        remaining_days = workout_plan.days.all().order_by('day_number')
+        for i, day in enumerate(remaining_days, 1):
+            day.day_number = i
+            day.save()
+        
+        return redirect('workouts:view_workout_plan', plan_id=plan_id)
+    
+    return render(request, 'workouts/delete_workout_plan_day.html', {
+        'workout_plan': workout_plan,
+        'day': day,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    })
+
+@login_required
+def ai_7day_plan_view(request):
+    # Get user's profile and recent workouts
+    profile = get_object_or_404(Profile, user=request.user)
+    recent_workouts = WorkoutLog.objects.filter(user=request.user).order_by('-date')[:5]
+    
+    # Get user's level and equipment
+    user_level = profile.level
+    equipment = profile.equipment if hasattr(profile, 'equipment') else []
+    
+    # Initialize AI service
+    ai_service = WorkoutAIService()
+    
+    # Generate recommendations using AI
+    workout_plan = None
+    
+    if request.method == 'POST':
+        # Get user preferences from form
+        workout_type = request.POST.get('workout_type', 'strength')
+        duration = int(request.POST.get('duration', 45))
+        focus_area = request.POST.get('focus_area', 'full_body')
+        intensity = request.POST.get('intensity', 'medium')
+        
+        # Generate 7-day workout plan
+        workout_plan = ai_service.generate_7day_workout_plan(
+            user_level=user_level,
+            recent_workouts=recent_workouts,
+            equipment=equipment,
+            duration=duration,
+            workout_type=workout_type,
+            focus_area=focus_area,
+            intensity=intensity
+        )
+
+    return render(request, 'workouts/ai_7day_plan.html', {
+        'workout_plan': workout_plan,
+        'user_level': user_level,
+        'recent_workouts': recent_workouts,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
     })

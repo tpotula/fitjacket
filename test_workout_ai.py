@@ -4,7 +4,7 @@ from workouts.ai_service import WorkoutAIService
 
 def main():
     # Set up the API key
-    api_key = os.getenv('GEMINI_API_KEY')
+    api_key = settings.GEMINI_API_KEY
     if not api_key:
         print("Error: GEMINI_API_KEY environment variable is not set")
         return

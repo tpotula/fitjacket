@@ -44,14 +44,14 @@ def workouts_home_view(request):
                 notes=guided.description,
                 date=request.POST.get('date') or datetime.date.today()
             )
-            return redirect('workouts_home')
+            return redirect('workouts:workouts_home')
         else:
             form = WorkoutLogForm(request.POST)
             if form.is_valid():
                 workout = form.save(commit=False)
                 workout.user = request.user
                 workout.save()
-                return redirect('workouts_home')
+                return redirect('workouts:workouts_home')
     else:
         form = WorkoutLogForm()
 
@@ -73,7 +73,7 @@ def log_workout_view(request):
             workout = form.save(commit=False)
             workout.user = request.user
             workout.save()
-            return redirect('workouts_home')
+            return redirect('workouts:workouts_home')
     else:
         form = WorkoutLogForm()
     return render(request, 'workouts/log_workout.html', {'form': form})

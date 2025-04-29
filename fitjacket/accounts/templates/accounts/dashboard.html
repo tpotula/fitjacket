@@ -27,7 +27,9 @@
   <!-- Groups -->
   <div class="sidebar-section-title">Fitness</div>
   <a href="{% url 'workouts:workouts_home' %}" class="sidebar-link">Workouts</a>
+  {% if profile and profile.level == 'athlete' %}
   <a href="{% url 'workouts:performance_analytics' %}" class="sidebar-link">Performance</a>
+  {% endif %}
   <a href="{% url 'workouts:reminders' %}" class="sidebar-link">Set Reminders</a>
 
   <div class="sidebar-section-title">Wellness</div>
@@ -38,7 +40,6 @@
   <div class="sidebar-section-title">Community</div>
   <a href="{% url 'challenges:list' %}" class="sidebar-link">Join Challenges</a>
   <a href="{% url 'challenges:leaderboard' %}" class="sidebar-link">Leaderboard</a>
-  <a href="#" class="sidebar-link">Profile</a>
 
   <div class="sidebar-footer mt-4">
     <div class="form-check form-switch mb-3">

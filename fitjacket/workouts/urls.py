@@ -14,4 +14,6 @@ urlpatterns = [
     path('injuries/toggle/<int:injury_id>/', views.toggle_injury_status, name='toggle_injury'),
     path('reminders/', views.reminders_view, name='reminders'),
     path('reminders/complete/<int:reminder_id>/', views.complete_reminder, name='complete_reminder'),
+    path('analytics/', views.performance_analytics_view, name='performance_analytics'),
+    path('ai-recommendations/', views.ai_recommendations_view, name='ai_recommendations'),
 ]

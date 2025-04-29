@@ -19,7 +19,10 @@
     </div>
     <div>
       <div class="sidebar-username">{{ request.user.username }}</div>
+      {% if profile %}
       <div class="text-muted small">{{ profile.level|capfirst }}</div>
+      {% endif %}
+
     </div>
   </div>
 

@@ -126,3 +126,49 @@ class Injury(models.Model):
 
         self.recovery_recommendations = "\n".join(recommendations)
         super().save(*args, **kwargs)
+
+class WorkoutPlan(models.Model):
+    PLAN_TYPE_CHOICES = [
+        ('beginner', 'Beginner'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan_type = models.CharField(max_length=20, choices=PLAN_TYPE_CHOICES)
+    start_date = models.DateField()
+    current_day = models.PositiveIntegerField(default=1)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username}'s {self.plan_type} Plan (Day {self.current_day})"
+
+class WorkoutPlanDay(models.Model):
+    plan = models.ForeignKey(WorkoutPlan, on_delete=models.CASCADE, related_name='days')
+    day_number = models.PositiveIntegerField()
+    workout_type = models.CharField(max_length=20, choices=WorkoutLog.WORKOUT_TYPE_CHOICES)
+    exercises = models.JSONField()  # Stores exercise details as JSON
+    duration = models.PositiveIntegerField()  # in minutes
+    notes = models.TextField(blank=True)
+    
+    class Meta:
+        unique_together = ['plan', 'day_number']
+        ordering = ['day_number']
+    
+    def __str__(self):
+        return f"Day {self.day_number} - {self.workout_type}"
+
+class WorkoutProgression(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exercise_name = models.CharField(max_length=100)
+    current_weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    current_reps = models.PositiveIntegerField(null=True, blank=True)
+    current_sets = models.PositiveIntegerField(null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ['user', 'exercise_name']
+    
+    def __str__(self):
+        return f"{self.user.username}'s {self.exercise_name} Progression"

@@ -19,6 +19,29 @@
         </div>
     </div>
 
+    <!-- Active Workout Plan -->
+    {% if active_plan %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Your Current Workout Plan</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Plan Type:</strong> {{ active_plan.plan_type|title }}</p>
+                    <p><strong>Current Day:</strong> {{ active_plan.current_day }}</p>
+                    <p><strong>Start Date:</strong> {{ active_plan.start_date }}</p>
+                </div>
+                <div class="col-md-6">
+                    <form method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="advance_day" value="1">
+                        <button type="submit" class="btn btn-success">Complete Day & Advance</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Workout Preferences Form -->
     <div class="card shadow-sm mb-5">
         <div class="card-body">
@@ -64,6 +87,7 @@
                             <option value="yoga_mat">Yoga Mat</option>
                             <option value="pull_up_bar">Pull-up Bar</option>
                         </select>
+                        <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options</small>
                     </div>
                 </div>
                 <div class="mt-4">
@@ -94,6 +118,10 @@
                                 <strong>{{ exercise.name }}</strong>
                                 <br>
                                 <small class="text-muted">{{ exercise.sets }} sets × {{ exercise.reps }} reps</small>
+                                {% if exercise.notes %}
+                                <br>
+                                <small class="text-info">{{ exercise.notes }}</small>
+                                {% endif %}
                             </li>
                             {% endfor %}
                         </ul>

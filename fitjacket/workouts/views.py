@@ -15,6 +15,9 @@ from django.utils           import timezone
 from .models                import Reminder
 from .forms                 import ReminderForm
 from .reminder_manager import ReminderManager
+from .models import WorkoutPlan
+from .models import WorkoutPlanDay
+from .ai_service import WorkoutAIService
 
 
 def workouts_home_view(request):
@@ -243,7 +246,50 @@ def ai_recommendations_view(request):
         user=request.user
     ).order_by('-date')[:5]  # Get last 5 workouts
 
+    # Get user's active workout plan if exists
+    active_plan = WorkoutPlan.objects.filter(
+        user=request.user,
+        is_active=True
+    ).first()
+
+    # Initialize AI service
+    ai_service = WorkoutAIService()
+
     if request.method == 'POST':
+        # Handle advancing to next day
+        if 'advance_day' in request.POST and active_plan:
+            # Get the current day's workout
+            current_day = WorkoutPlanDay.objects.get(
+                plan=active_plan,
+                day_number=active_plan.current_day
+            )
+            
+            # Log the completed workout
+            WorkoutLog.objects.create(
+                user=request.user,
+                workout_type=current_day.workout_type,
+                exercise_name=f"Day {active_plan.current_day} Workout",
+                duration=current_day.duration,
+                notes=current_day.notes,
+                date=timezone.now().date()
+            )
+            
+            # Check if there are more days in the plan
+            next_day = WorkoutPlanDay.objects.filter(
+                plan=active_plan,
+                day_number=active_plan.current_day + 1
+            ).first()
+            
+            if next_day:
+                active_plan.current_day += 1
+                active_plan.save()
+            else:
+                # Plan completed
+                active_plan.is_active = False
+                active_plan.save()
+            
+            return redirect('workouts:ai_recommendations')
+
         # Check if this is a save workout request
         if 'save_workout' in request.POST:
             workout_data = request.POST.get('workout_data')
@@ -265,83 +311,101 @@ def ai_recommendations_view(request):
         difficulty = request.POST.get('difficulty')
         equipment = request.POST.getlist('equipment')
 
-        # Generate recommendations based on user level
+        # Generate recommendations using AI
         recommendations = []
         
-        # Beginner-focused recommendations
-        if user_level == 'beginner':
-            recommendations.extend([
-                {
-                    'title': 'Beginner Full Body Strength',
-                    'description': 'A gentle introduction to strength training, perfect for beginners.',
-                    'duration': 30,
-                    'difficulty': 'Beginner',
-                    'exercises': [
-                        {'name': 'Bodyweight Squats', 'sets': 3, 'reps': '10-12'},
-                        {'name': 'Push-ups (Knee)', 'sets': 3, 'reps': '8-10'},
-                        {'name': 'Plank', 'sets': 3, 'reps': '20-30 seconds'},
-                    ],
-                    'progression': 'Increase reps by 2 each week'
-                },
-                {
-                    'title': 'Beginner Cardio',
-                    'description': 'Low-impact cardio workout to build endurance safely.',
-                    'duration': 20,
-                    'difficulty': 'Beginner',
-                    'exercises': [
-                        {'name': 'Walking', 'sets': 1, 'reps': '5 minutes'},
-                        {'name': 'Light Jogging', 'sets': 1, 'reps': '2 minutes'},
-                        {'name': 'Walking', 'sets': 1, 'reps': '5 minutes'},
-                    ],
-                    'progression': 'Increase jogging time by 1 minute weekly'
-                }
-            ])
+        # If user is a beginner and doesn't have an active plan, create one
+        if user_level == 'beginner' and not active_plan:
+            # Create a new workout plan
+            active_plan = WorkoutPlan.objects.create(
+                user=request.user,
+                plan_type='beginner',
+                start_date=timezone.now().date(),
+                current_day=1
+            )
+            
+            # Generate a 7-day workout plan using AI
+            for day in range(1, 8):
+                workout_plan = ai_service.generate_workout_plan(
+                    user_level=user_level,
+                    recent_workouts=recent_workouts,
+                    equipment=equipment,
+                    duration=30,  # Default duration for beginners
+                    workout_type='strength' if day % 2 == 1 else 'cardio'
+                )
+                
+                if workout_plan:
+                    # Create workout plan day
+                    WorkoutPlanDay.objects.create(
+                        plan=active_plan,
+                        day_number=day,
+                        workout_type='strength' if day % 2 == 1 else 'cardio',  # Set workout type based on day
+                        exercises=workout_plan['exercises'],
+                        duration=workout_plan['duration'],
+                        notes=workout_plan['description']
+                    )
         
-        # Athlete-focused recommendations
-        else:
-            recommendations.extend([
-                {
-                    'title': 'Athlete Strength Training',
-                    'description': 'Advanced strength training for athletes.',
-                    'duration': 45,
-                    'difficulty': 'Athlete',
-                    'exercises': [
-                        {'name': 'Push-ups', 'sets': 4, 'reps': '15-20'},
-                        {'name': 'Squats', 'sets': 4, 'reps': '20-25'},
-                        {'name': 'Plank', 'sets': 4, 'reps': '60 seconds'},
-                    ],
-                    'progression': 'Add 1 set each week'
-                },
-                {
-                    'title': 'Athlete HIIT',
-                    'description': 'High-intensity interval training for athletes.',
-                    'duration': 30,
-                    'difficulty': 'Athlete',
-                    'exercises': [
-                        {'name': 'Jumping Jacks', 'sets': 4, 'reps': '60 seconds'},
-                        {'name': 'Mountain Climbers', 'sets': 4, 'reps': '45 seconds'},
-                        {'name': 'Burpees', 'sets': 4, 'reps': '60 seconds'},
-                    ],
-                    'progression': 'Increase work intervals by 5 seconds weekly'
-                }
-            ])
-
-        # Add variety based on workout history
-        if recent_workouts:
-            last_workout_type = recent_workouts[0].workout_type
-            if last_workout_type == 'strength':
+        # Get current day's workout if there's an active plan
+        if active_plan:
+            try:
+                current_day = WorkoutPlanDay.objects.get(
+                    plan=active_plan,
+                    day_number=active_plan.current_day
+                )
                 recommendations.append({
-                    'title': 'Active Recovery',
-                    'description': 'Light workout to complement your strength training.',
-                    'duration': 20,
-                    'difficulty': 'Beginner',
-                    'exercises': [
-                        {'name': 'Light Stretching', 'sets': 1, 'reps': '5 minutes'},
-                        {'name': 'Walking', 'sets': 1, 'reps': '10 minutes'},
-                        {'name': 'Yoga Flow', 'sets': 1, 'reps': '5 minutes'},
-                    ],
-                    'progression': 'Gradually increase stretching duration'
+                    'title': f'Day {active_plan.current_day} Workout',
+                    'description': current_day.notes,
+                    'duration': current_day.duration,
+                    'difficulty': user_level,
+                    'exercises': current_day.exercises,
+                    'progression': 'Complete all exercises with proper form'
                 })
+            except WorkoutPlanDay.DoesNotExist:
+                # If the current day doesn't exist, mark the plan as inactive
+                active_plan.is_active = False
+                active_plan.save()
+                active_plan = None
+
+        # Generate additional workout variations using AI
+        for _ in range(2):  # Generate 2 additional variations
+            workout_variation = ai_service.generate_workout_variation(
+                user_level=user_level,
+                recent_workouts=recent_workouts,
+                equipment=equipment
+            )
+            
+            if workout_variation:
+                recommendations.append(workout_variation)
+
+        # If no recommendations were generated, create a default one
+        if not recommendations:
+            recommendations.append({
+                'title': 'Full Body Workout',
+                'description': 'A balanced workout targeting all major muscle groups.',
+                'duration': 45,
+                'difficulty': user_level,
+                'exercises': [
+                    {
+                        'name': 'Push-ups',
+                        'sets': 3,
+                        'reps': '10-12',
+                        'notes': 'Keep your core tight and maintain proper form'
+                    },
+                    {
+                        'name': 'Squats',
+                        'sets': 3,
+                        'reps': '12-15',
+                        'notes': 'Keep your back straight and knees aligned with toes'
+                    },
+                    {
+                        'name': 'Plank',
+                        'sets': 3,
+                        'reps': '30 seconds',
+                        'notes': 'Maintain a straight line from head to heels'
+                    }
+                ],
+                'progression': 'Increase reps or duration by 10% each week'
+            })
     else:
         recommendations = None
 
@@ -349,6 +413,7 @@ def ai_recommendations_view(request):
         'recommendations': recommendations,
         'user_level': user_level,
         'recent_workouts': recent_workouts,
+        'active_plan': active_plan,
         'dark_mode': request.COOKIES.get('darkMode') == 'true',
     }
     return render(request, 'workouts/ai_recommendations.html', context)

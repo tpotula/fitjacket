@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # if you’re using a .env file in your project root
+
+# Make your Gemini key available under settings.GEMINI_API_KEY
+GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -142,3 +150,36 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Google Oauth2.0 credentials
 GOOGLE_CLIENT_ID = "752173492871-uk8lvt50psrhfujab95v1loeukq1dr4j.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
+
+# Gemini AI Configuration
+GEMINI_API_KEY = 'AIzaSyBptxfb1gNKbXKfrNAhez8gyMX_OttrwGk'
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'workouts': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

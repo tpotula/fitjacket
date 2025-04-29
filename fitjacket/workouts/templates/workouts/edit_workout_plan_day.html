@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Day {{ day.day_number }}</h2>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="workout_type">Workout Type</label>
+            <select name="workout_type" id="workout_type" class="form-control" required>
+                <option value="strength" {% if day.workout_type == 'strength' %}selected{% endif %}>Strength Training</option>
+                <option value="cardio" {% if day.workout_type == 'cardio' %}selected{% endif %}>Cardio</option>
+                <option value="flexibility" {% if day.workout_type == 'flexibility' %}selected{% endif %}>Flexibility</option>
+                <option value="balance" {% if day.workout_type == 'balance' %}selected{% endif %}>Balance</option>
+            </select>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="duration">Duration (minutes)</label>
+            <input type="number" name="duration" id="duration" class="form-control" min="15" max="180" value="{{ day.duration }}" required>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="exercises">Exercises (JSON format)</label>
+            <textarea name="exercises" id="exercises" class="form-control" rows="10" required>{{ day.exercises|safe }}</textarea>
+            <small class="form-text text-muted">
+                Format: [{"name": "Exercise Name", "sets": number, "reps": "reps description", "notes": "form tips"}]
+            </small>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="notes">Notes</label>
+            <textarea name="notes" id="notes" class="form-control" rows="3">{{ day.notes }}</textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+        <a href="{% url 'workouts:view_workout_plan' workout_plan.id %}" class="btn btn-secondary mt-4">Cancel</a>
+    </form>
+</div>
+{% endblock %} 

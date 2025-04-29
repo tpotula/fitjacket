@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>7-Day Workout Plan Generator</h2>
+        <a href="{% url 'workouts:ai_recommendations' %}" class="btn btn-primary">Generate Single Workout</a>
+    </div>
+    
+    <!-- Workout Preferences Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Create Your 7-Day Plan</h4>
+            <form method="post" class="mt-3">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="workout_type">Primary Workout Type</label>
+                            <select name="workout_type" id="workout_type" class="form-control" required>
+                                <option value="strength" {% if request.POST.workout_type == 'strength' %}selected{% endif %}>Strength Training</option>
+                                <option value="cardio" {% if request.POST.workout_type == 'cardio' %}selected{% endif %}>Cardio</option>
+                                <option value="flexibility" {% if request.POST.workout_type == 'flexibility' %}selected{% endif %}>Flexibility</option>
+                                <option value="balance" {% if request.POST.workout_type == 'balance' %}selected{% endif %}>Balance</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="duration">Daily Duration (minutes)</label>
+                            <input type="number" name="duration" id="duration" class="form-control" min="15" max="180" value="{{ request.POST.duration|default:'45' }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="focus_area">Focus Area</label>
+                            <select name="focus_area" id="focus_area" class="form-control" required>
+                                <option value="full_body" {% if request.POST.focus_area == 'full_body' %}selected{% endif %}>Full Body</option>
+                                <option value="upper_body" {% if request.POST.focus_area == 'upper_body' %}selected{% endif %}>Upper Body</option>
+                                <option value="lower_body" {% if request.POST.focus_area == 'lower_body' %}selected{% endif %}>Lower Body</option>
+                                <option value="core" {% if request.POST.focus_area == 'core' %}selected{% endif %}>Core</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="intensity">Intensity Level</label>
+                            <select name="intensity" id="intensity" class="form-control" required>
+                                <option value="low" {% if request.POST.intensity == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if request.POST.intensity == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if request.POST.intensity == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Generate 7-Day Plan</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 7-Day Workout Plan -->
+    {% if workout_plan %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="card-title">{{ workout_plan.title }}</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ workout_plan.description }}</p>
+            
+            <div class="mt-4">
+                <h4>Weekly Tips</h4>
+                <ul class="list-group">
+                    {% for tip in workout_plan.weekly_tips %}
+                    <li class="list-group-item">{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="mt-4">
+                <h4>Daily Workouts</h4>
+                {% for day in workout_plan.days %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="card-title">{{ day.title }}</h5>
+                        <span class="badge {% if day.type == 'strength' %}bg-primary{% elif day.type == 'cardio' %}bg-success{% else %}bg-info{% endif %}">
+                            {{ day.type|title }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ day.description }}</p>
+                        
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Exercise</th>
+                                        <th>Sets</th>
+                                        <th>Reps</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for exercise in day.exercises %}
+                                    <tr>
+                                        <td>{{ exercise.name }}</td>
+                                        <td>{{ exercise.sets }}</td>
+                                        <td>{{ exercise.reps }}</td>
+                                        <td>{{ exercise.notes }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <h6>Day Tips</h6>
+                            <ul class="list-group">
+                                {% for tip in day.tips %}
+                                <li class="list-group-item">{{ tip }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

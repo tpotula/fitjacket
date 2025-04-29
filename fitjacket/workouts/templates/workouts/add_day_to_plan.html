@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Day to Workout Plan</h2>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="workout_type">Workout Type</label>
+            <select name="workout_type" id="workout_type" class="form-control" required>
+                <option value="strength">Strength Training</option>
+                <option value="cardio">Cardio</option>
+                <option value="flexibility">Flexibility</option>
+                <option value="balance">Balance</option>
+            </select>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="duration">Duration (minutes)</label>
+            <input type="number" name="duration" id="duration" class="form-control" min="15" max="180" value="45" required>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="exercises">Exercises (JSON format)</label>
+            <textarea name="exercises" id="exercises" class="form-control" rows="10" required></textarea>
+            <small class="form-text text-muted">
+                Format: [{"name": "Exercise Name", "sets": number, "reps": "reps description", "notes": "form tips"}]
+            </small>
+        </div>
+        
+        <div class="form-group mt-3">
+            <label for="notes">Notes</label>
+            <textarea name="notes" id="notes" class="form-control" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-4">Add Day</button>
+        <a href="{% url 'workouts:view_workout_plan' workout_plan.id %}" class="btn btn-secondary mt-4">Cancel</a>
+    </form>
+</div>
+{% endblock %} 

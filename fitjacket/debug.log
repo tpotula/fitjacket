@@ -18135,3 +18135,54 @@ INFO 2025-04-29 18:08:42,513 ai_service Generating 7-day workout plan with promp
             WEEKLY_TIP2: Weekly tip 2
             
 INFO 2025-04-29 18:08:53,249 ai_service Successfully generated 7-day workout plan: {'title': '7-Day Strength Full Body Plan', 'description': 'A bodyweight-only workout plan focusing on full-body strength development with low intensity and progressive overload.', 'days': [{'day': 1, 'type': 'strength', 'title': 'Day 1 - Strength Full Body', 'description': 'Focus on foundational strength exercises.', 'exercises': [{'name': 'Squats', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Keep your back straight and core engaged.'}, {'name': 'Push-ups (on knees if needed)', 'sets': 3, 'reps': 'As many reps as possible (AMRAP)', 'notes': 'Maintain a straight line from head to knees.'}, {'name': 'Lunges (alternating legs)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': 'Keep your front knee over your ankle.'}, {'name': 'Plank', 'sets': 3, 'reps': 'Hold for 30-45 seconds', 'notes': 'Engage your core and keep your back flat.'}, {'name': 'Superman', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Squeeze your glutes at the top of the movement.'}], 'tips': ['Focus on controlled movements.', 'Rest for 60 seconds between sets.']}, {'day': 2, 'type': 'strength', 'title': 'Day 2 - Strength Full Body', 'description': 'Building on Day 1 with slightly more challenging variations.', 'exercises': [{'name': 'Squats (add a 2-second pause at the bottom)', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Maintain good form throughout the pause.'}, {'name': 'Push-ups (full push-ups)', 'sets': 3, 'reps': 'AMRAP', 'notes': 'Lower your chest to the floor.'}, {'name': 'Lunges (alternating legs, holding a static lunge for 2 seconds)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': 'Focus on balance.'}, {'name': 'Side Plank (each side)', 'sets': 3, 'reps': 'Hold for 30-45 seconds', 'notes': 'Keep your body in a straight line.'}, {'name': 'Bird Dog', 'sets': 3, 'reps': '10-12 reps per side', 'notes': 'Keep your core engaged and back straight.'}], 'tips': ['Focus on controlled movements.', 'Rest for 60 seconds between sets.']}, {'day': 3, 'type': 'rest', 'title': 'Rest Day', 'description': 'Active recovery is encouraged.', 'exercises': [{'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}], 'tips': ['Gentle stretching or a light walk is beneficial.', 'Stay hydrated.']}, {'day': 4, 'type': 'strength', 'title': 'Day 4 - Strength Full Body', 'description': 'Increasing volume and slightly more challenging exercises.', 'exercises': [{'name': 'Jump Squats (low impact)', 'sets': 3, 'reps': '8-10 reps', 'notes': 'Land softly.'}, {'name': 'Decline Push-ups (feet elevated)', 'sets': 3, 'reps': 'AMRAP', 'notes': 'Use a chair or step for elevation.'}, {'name': 'Reverse Lunges (alternating legs)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': 'Keep your front knee over your ankle.'}, {'name': 'Plank with shoulder taps', 'sets': 3, 'reps': '10-12 taps per side', 'notes': 'Maintain a stable core.'}, {'name': 'Glute Bridges', 'sets': 3, 'reps': '15-20 reps', 'notes': 'Squeeze your glutes at the top.'}], 'tips': ['Focus on proper form over speed.', 'Rest for 60 seconds between sets.']}, {'day': 5, 'type': 'strength', 'title': 'Day 5 - Strength Full Body', 'description': 'Continue building strength.', 'exercises': [{'name': 'Squats (add a 3-second hold at the bottom)', 'sets': 3, 'reps': '8-10 reps', 'notes': 'Maintain good form throughout the hold.'}, {'name': 'Diamond Push-ups (knees on the ground if needed)', 'sets': 3, 'reps': 'AMRAP', 'notes': 'Keep your elbows close to your body.'}, {'name': 'Curtsy Lunges (alternating legs)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': 'Keep your front knee over your ankle.'}, {'name': 'Side Plank with hip dips (each side)', 'sets': 3, 'reps': '10-12 dips', 'notes': 'Control the movement.'}, {'name': 'Back Extensions', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Squeeze your back muscles at the top.'}], 'tips': ['Listen to your body and take breaks when needed.', 'Rest for 60 seconds between sets.']}, {'day': 6, 'type': 'rest', 'title': 'Rest Day', 'description': 'Recovery is key for progress.', 'exercises': [{'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '0', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 0, 'reps': '10-12', 'notes': ''}], 'tips': []}, {'day': 7, 'type': 'strength', 'title': 'Day 7 - Strength Full Body', 'description': 'Day 7 strength workout focusing on full body', 'exercises': [{'name': 'Push-ups', 'sets': 3, 'reps': '10-12', 'notes': 'Keep your core tight'}, {'name': 'Squats', 'sets': 3, 'reps': '12-15', 'notes': 'Keep your back straight'}], 'tips': ['Focus on proper form', 'Stay hydrated']}], 'weekly_tips': []}
+INFO 2025-04-29 19:43:54,266 ai_service Available models:
+INFO 2025-04-29 19:43:54,621 ai_service Model: models/chat-bison-001
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/text-bison-001
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/embedding-gecko-001
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/gemini-1.0-pro-vision-latest
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/gemini-pro-vision
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/gemini-1.5-pro-latest
+INFO 2025-04-29 19:43:54,622 ai_service Model: models/gemini-1.5-pro-001
+INFO 2025-04-29 19:43:54,623 ai_service Model: models/gemini-1.5-pro-002
+INFO 2025-04-29 19:43:54,623 ai_service Model: models/gemini-1.5-pro
+INFO 2025-04-29 19:43:54,623 ai_service Model: models/gemini-1.5-flash-latest
+INFO 2025-04-29 19:43:54,623 ai_service Model: models/gemini-1.5-flash-001
+INFO 2025-04-29 19:43:54,623 ai_service Model: models/gemini-1.5-flash-001-tuning
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-002
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-8b
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-8b-001
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-8b-latest
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-8b-exp-0827
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-1.5-flash-8b-exp-0924
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-2.5-pro-exp-03-25
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-2.5-pro-preview-03-25
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-2.5-flash-preview-04-17
+INFO 2025-04-29 19:43:54,624 ai_service Model: models/gemini-2.0-flash-exp
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-001
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-exp-image-generation
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-lite-001
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-lite
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-lite-preview-02-05
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-lite-preview
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-pro-exp
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-pro-exp-02-05
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-exp-1206
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-thinking-exp-01-21
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-thinking-exp
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/gemini-2.0-flash-thinking-exp-1219
+INFO 2025-04-29 19:43:54,625 ai_service Model: models/learnlm-1.5-pro-experimental
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/learnlm-2.0-flash-experimental
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemma-3-1b-it
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemma-3-4b-it
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemma-3-12b-it
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemma-3-27b-it
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/embedding-001
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/text-embedding-004
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemini-embedding-exp-03-07
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemini-embedding-exp
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/aqa
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/imagen-3.0-generate-002
+INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemini-2.0-flash-live-001
+INFO 2025-04-29 19:43:54,627 ai_service Successfully initialized Gemini AI model

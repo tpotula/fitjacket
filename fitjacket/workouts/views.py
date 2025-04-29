@@ -149,7 +149,7 @@ def add_meal_view(request):
             meal = form.save(commit=False)
             meal.user = request.user
             meal.save()
-            return redirect('nutrition_tracking')
+            return redirect('workouts:nutrition_tracking')
     else:
         form = MealForm(initial={'date': meal_date})
     
@@ -172,7 +172,7 @@ def injury_log_view(request):
             injury = form.save(commit=False)
             injury.user = request.user
             injury.save()
-            return redirect('injury_log')
+            return redirect('workouts:injury_log')
     else:
         form = InjuryForm()
     
@@ -195,7 +195,7 @@ def toggle_injury_status(request, injury_id):
     except Injury.DoesNotExist:
         pass
     
-    return redirect('injury_log')
+    return redirect('workouts:injury_log')
 
 @login_required
 def reminders_view(request):

@@ -15,6 +15,8 @@ from challenges.models import Participation
 from workouts.models import WorkoutLog, Meal
 import requests
 from django.conf import settings
+from workouts.reminder_manager import ReminderManager
+from django.utils import timezone
 
 def auth_home(request):
     """
@@ -221,7 +223,21 @@ def dashboard_view(request):
     if achievement_progress > 100:
         achievement_progress = 100
 
-    return render(request, 'accounts/dashboard.html', {
+    # Calculate today's workout duration
+    today = datetime.date.today()
+    today_workouts = WorkoutLog.objects.filter(
+        user=request.user,
+        date=today
+    )
+
+    today_duration = today_workouts.aggregate(
+        duration=models.Sum('duration')
+    )['duration'] or 0
+
+    reminder_manager = ReminderManager()
+    imminent_reminders = reminder_manager.get_all_reminders(request.user)
+    
+    context = {
         'profile':              profile,
         'ongoing_challenges':   ongoing_challenges,
         'total_points':         total_points,
@@ -233,7 +249,11 @@ def dashboard_view(request):
         'workouts_count':       workouts_count,
         'workout_chart':        workout_chart,
         'meal_chart':           meal_chart,
-    })
+        'imminent_reminders':   imminent_reminders,
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+        'workout_duration':     today_duration,
+    }
+    return render(request, 'accounts/dashboard.html', context)
 
 
 @login_required

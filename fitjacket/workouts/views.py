@@ -14,6 +14,7 @@ from django.shortcuts        import get_object_or_404
 from django.utils           import timezone
 from .models                import Reminder
 from .forms                 import ReminderForm
+from .reminder_manager import ReminderManager
 
 
 def workouts_home_view(request):
@@ -192,30 +193,38 @@ def toggle_injury_status(request, injury_id):
 
 @login_required
 def reminders_view(request):
+    reminder_manager = ReminderManager()
+    
     if request.method == 'POST':
         form = ReminderForm(request.POST)
+        print(f"Form data: {request.POST}")  # Debug
         if form.is_valid():
-            rem        = form.save(commit=False)
-            rem.user   = request.user
+            print("Form is valid")  # Debug
+            rem = form.save(commit=False)
+            rem.user = request.user
             rem.save()
+            print(f"Saved reminder: {rem}")  # Debug
+            # Get next reminder through manager to trigger notification
+            next_reminder = reminder_manager.get_next_reminder(request.user)
+            print(f"Next reminder: {next_reminder}")  # Debug
             return redirect('workouts:reminders')
+        else:
+            print(f"Form errors: {form.errors}")  # Debug
     else:
         form = ReminderForm()
 
-    upcoming = Reminder.objects.filter(
-        user=request.user,
-        completed=False,
-        remind_at__gte=timezone.now()
-    ).order_by('remind_at')
+    upcoming = reminder_manager.get_all_reminders(request.user)
+    print(f"Upcoming reminders: {list(upcoming)}")  # Debug
 
-    return render(request, 'workouts/reminders.html', {
-        'form':      form,
+    context = {
+        'form': form,
         'reminders': upcoming,
-    })
+        'dark_mode': request.COOKIES.get('darkMode') == 'true',
+    }
+    return render(request, 'workouts/reminders.html', context)
 
 @login_required
 def complete_reminder(request, reminder_id):
-    rem = get_object_or_404(Reminder, id=reminder_id, user=request.user)
-    rem.completed = True
-    rem.save()
+    reminder_manager = ReminderManager()
+    reminder_manager.mark_complete(reminder_id, request.user)
     return redirect('workouts:reminders')

@@ -49,7 +49,7 @@
                         <p class="mb-1"><strong>Logged:</strong> {{ injury.date_logged|date:"F j, Y" }}</p>
                         <p class="mb-1"><strong>Description:</strong> {{ injury.description }}</p>
                     </div>
-                    <form method="post" action="{% url 'toggle_injury' injury.id %}">
+                    <form method="post" action="{% url 'workouts:toggle_injury' injury.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-success">Mark as Recovered</button>
                     </form>
@@ -80,7 +80,7 @@
                         <p class="mb-1"><strong>Logged:</strong> {{ injury.date_logged|date:"F j, Y" }}</p>
                         <p class="mb-1"><strong>Description:</strong> {{ injury.description }}</p>
                     </div>
-                    <form method="post" action="{% url 'toggle_injury' injury.id %}">
+                    <form method="post" action="{% url 'workouts:toggle_injury' injury.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-warning">Mark as Active</button>
                     </form>

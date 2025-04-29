@@ -26,13 +26,13 @@
 
   <!-- Groups -->
   <div class="sidebar-section-title">Fitness</div>
-  <a href="{% url 'workouts_home' %}" class="sidebar-link">Workouts</a>
+  <a href="{% url 'workouts:workouts_home' %}" class="sidebar-link">Workouts</a>
   <a href="#" class="sidebar-link">View Progress</a>
-  <a href="{% url 'reminders' %}" class="sidebar-link">Set Reminders</a>
+  <a href="{% url 'workouts:reminders' %}" class="sidebar-link">Set Reminders</a>
 
   <div class="sidebar-section-title">Wellness</div>
-  <a href="{% url 'nutrition_tracking' %}" class="sidebar-link">Track Nutrition</a>
-  <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
+  <a href="{% url 'workouts:nutrition_tracking' %}" class="sidebar-link">Track Nutrition</a>
+  <a href="{% url 'workouts:injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
   <div class="sidebar-section-title">Community</div>
@@ -59,6 +59,18 @@
       <h2 class="fw-bold text-primary">Fit Jacket</h2>
     </div>
 
+    <!-- Notifications -->
+    {% if imminent_reminders %}
+      {% for reminder in imminent_reminders %}
+        <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
+          <strong>Upcoming Reminder!</strong> {{ reminder.text }} 
+          <span class="text-muted">at {{ reminder.remind_at|date:"g:i A" }}</span>
+          <a href="{% url 'workouts:complete_reminder' reminder.id %}" class="btn btn-sm btn-success ms-2">Done</a>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <!-- Summary Row -->
     <div class="row g-4 mb-4 d-flex justify-content-center">
       <div class="col-lg-4">
@@ -68,7 +80,6 @@
         </div>
       </div>
     </div>
-<!-- Connect to Google Fit -->
 
     <!-- Monthly Goal Progress -->
     <div class="row justify-content-center mb-4">
@@ -111,20 +122,8 @@
 
     <!-- Reminders & Ongoing Challenges -->
     <div class="row g-4 mb-4">
-      <!-- Reminders -->
-      <div class="col-md-6">
-        <div class="card shadow-sm p-4 h-100">
-          <h5 class="mb-3">Reminders</h5>
-          <ul class="list-unstyled mb-0">
-            <li>• Workout at 6 PM</li>
-            <li>• Drink 2L Water</li>
-            <li>• Log today's meals</li>
-          </ul>
-        </div>
-      </div>
-
       <!-- Ongoing Challenges -->
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card shadow-sm p-4 h-100">
           <h5 class="mb-3">Ongoing Challenges</h5>
           {% for p in ongoing_challenges %}

@@ -9,11 +9,11 @@
         <div class="col-md-6">
             <form method="get" class="d-flex gap-2">
                 <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}" class="form-control" onchange="this.form.submit()">
-                <button type="button" class="btn btn-outline-primary" onclick="window.location.href='{% url 'nutrition_tracking' %}?date={% now 'Y-m-d' %}'">Today</button>
+                <button type="button" class="btn btn-outline-primary" onclick="window.location.href='{% url 'workouts:nutrition_tracking' %}?date={% now 'Y-m-d' %}'">Today</button>
             </form>
         </div>
         <div class="col-md-6 text-end">
-            <a href="{% url 'add_meal' %}?date={{ selected_date|date:'Y-m-d' }}" class="btn btn-primary">
+            <a href="{% url 'workouts:add_meal' %}?date={{ selected_date|date:'Y-m-d' }}" class="btn btn-primary">
                 Add Meal
             </a>
         </div>

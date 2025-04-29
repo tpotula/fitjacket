@@ -2,6 +2,7 @@
 
 from django import forms
 from .models import WorkoutLog, Meal, Injury, Reminder
+from django.utils import timezone
 
 class WorkoutLogForm(forms.ModelForm):
     class Meta:
@@ -48,3 +49,13 @@ class ReminderForm(forms.ModelForm):
             'text':      forms.TextInput(attrs={'class':'form-control', 'placeholder':'e.g. Workout at 6 PM'}),
             'remind_at': forms.DateTimeInput(attrs={'type':'datetime-local','class':'form-control'}),
         }
+    
+    def clean_remind_at(self):
+        remind_at = self.cleaned_data['remind_at']
+        if remind_at:
+            # Check if the datetime is already timezone aware
+            if timezone.is_naive(remind_at):
+                # Only make it aware if it's naive
+                return timezone.make_aware(remind_at)
+            return remind_at
+        return remind_at

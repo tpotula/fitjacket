@@ -26,14 +26,14 @@
   <!-- Fitness Section -->
   <div class="sidebar-section-title">Fitness</div>
   <a href="{% url 'dashboard' %}" class="sidebar-link">Dashboard</a>
-  <a href="{% url 'workouts_home' %}" class="sidebar-link">Workouts</a>
+  <a href="{% url 'workouts:workouts_home' %}" class="sidebar-link">Workouts</a>
   <a href="#" class="sidebar-link">View Progress</a>
-  <a href="{% url 'reminders' %}" class="sidebar-link">Set Reminders</a>
+  <a href="{% url 'workouts:reminders' %}" class="sidebar-link">Set Reminders</a>
 
   <!-- Wellness Section -->
   <div class="sidebar-section-title">Wellness</div>
-  <a href="{% url 'nutrition_tracking' %}" class="sidebar-link">Track Nutrition</a>
-  <a href="{% url 'injury_log' %}" class="sidebar-link">Log Injuries</a>
+  <a href="{% url 'workouts:nutrition_tracking' %}" class="sidebar-link">Track Nutrition</a>
+  <a href="{% url 'workouts:injury_log' %}" class="sidebar-link">Log Injuries</a>
   <a href="#" class="sidebar-link">AI Workout Planner</a>
 
   <!-- Community Section -->

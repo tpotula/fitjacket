@@ -9,14 +9,12 @@ from .models import Meal
 from .forms import MealForm
 from .models import Injury
 from .forms import InjuryForm
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.shortcuts        import get_object_or_404
 from django.utils           import timezone
 from .models                import Reminder
 from .forms                 import ReminderForm
 from .reminder_manager import ReminderManager
-from django.db.models import Avg, Count, Sum
-from django.db.models.functions import ExtractWeek, ExtractMonth
 
 
 def workouts_home_view(request):
@@ -230,55 +228,3 @@ def complete_reminder(request, reminder_id):
     reminder_manager = ReminderManager()
     reminder_manager.mark_complete(reminder_id, request.user)
     return redirect('workouts:reminders')
-
-def is_athlete(user):
-    return hasattr(user, 'profile') and user.profile.level == 'athlete'
-
-@login_required
-@user_passes_test(is_athlete)
-def performance_analytics_view(request):
-    # Get the user's workout data
-    workouts = WorkoutLog.objects.filter(user=request.user)
-    
-    # Calculate key metrics
-    total_workouts = workouts.count()
-    total_duration = workouts.aggregate(Sum('duration'))['duration__sum'] or 0
-    avg_duration = workouts.aggregate(Avg('duration'))['duration__avg'] or 0
-    
-    # Weekly stats
-    current_week = timezone.now().isocalendar()[1]
-    weekly_workouts = workouts.filter(
-        date__year=timezone.now().year
-    ).annotate(
-        week=ExtractWeek('date')
-    ).values('week').annotate(
-        count=Count('id'),
-        total_duration=Sum('duration')
-    ).order_by('-week')[:8]  # Last 8 weeks
-    
-    # Monthly progression
-    monthly_workouts = workouts.filter(
-        date__year=timezone.now().year
-    ).annotate(
-        month=ExtractMonth('date')
-    ).values('month').annotate(
-        count=Count('id'),
-        total_duration=Sum('duration'),
-        avg_duration=Avg('duration')
-    ).order_by('month')
-    
-    # Workout type distribution
-    workout_types = workouts.values('workout_type').annotate(
-        count=Count('id')
-    ).order_by('-count')
-    
-    context = {
-        'total_workouts': total_workouts,
-        'total_duration': total_duration,
-        'avg_duration': round(avg_duration, 1) if avg_duration else 0,
-        'weekly_workouts': weekly_workouts,
-        'monthly_workouts': monthly_workouts,
-        'workout_types': workout_types,
-    }
-    
-    return render(request, 'workouts/performance_analytics.html', context)

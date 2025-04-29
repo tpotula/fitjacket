@@ -18186,189 +18186,54 @@ INFO 2025-04-29 19:43:54,626 ai_service Model: models/aqa
 INFO 2025-04-29 19:43:54,626 ai_service Model: models/imagen-3.0-generate-002
 INFO 2025-04-29 19:43:54,626 ai_service Model: models/gemini-2.0-flash-live-001
 INFO 2025-04-29 19:43:54,627 ai_service Successfully initialized Gemini AI model
-INFO 2025-04-29 20:54:47,984 ai_service Available models:
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/chat-bison-001
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/text-bison-001
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/embedding-gecko-001
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/gemini-1.0-pro-vision-latest
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/gemini-pro-vision
-INFO 2025-04-29 20:54:48,101 ai_service Model: models/gemini-1.5-pro-latest
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-pro-001
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-pro-002
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-pro
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-latest
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-001
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-001-tuning
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-002
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-8b
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-8b-001
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-8b-latest
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-8b-exp-0827
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-1.5-flash-8b-exp-0924
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.5-pro-exp-03-25
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.5-pro-preview-03-25
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.5-flash-preview-04-17
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-exp
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-001
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-exp-image-generation
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-lite-001
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-lite
-INFO 2025-04-29 20:54:48,102 ai_service Model: models/gemini-2.0-flash-lite-preview-02-05
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-flash-lite-preview
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-pro-exp
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-pro-exp-02-05
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-exp-1206
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-flash-thinking-exp-01-21
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-flash-thinking-exp
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-flash-thinking-exp-1219
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/learnlm-1.5-pro-experimental
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/learnlm-2.0-flash-experimental
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemma-3-1b-it
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemma-3-4b-it
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemma-3-12b-it
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemma-3-27b-it
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/embedding-001
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/text-embedding-004
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-embedding-exp-03-07
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-embedding-exp
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/aqa
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/imagen-3.0-generate-002
-INFO 2025-04-29 20:54:48,103 ai_service Model: models/gemini-2.0-flash-live-001
-INFO 2025-04-29 20:54:48,103 ai_service Successfully initialized Gemini AI model
-INFO 2025-04-29 20:54:53,862 ai_service Available models:
-INFO 2025-04-29 20:54:53,936 ai_service Model: models/chat-bison-001
-INFO 2025-04-29 20:54:53,937 ai_service Model: models/text-bison-001
-INFO 2025-04-29 20:54:53,937 ai_service Model: models/embedding-gecko-001
-INFO 2025-04-29 20:54:53,937 ai_service Model: models/gemini-1.0-pro-vision-latest
-INFO 2025-04-29 20:54:53,938 ai_service Model: models/gemini-pro-vision
-INFO 2025-04-29 20:54:53,938 ai_service Model: models/gemini-1.5-pro-latest
-INFO 2025-04-29 20:54:53,938 ai_service Model: models/gemini-1.5-pro-001
-INFO 2025-04-29 20:54:53,938 ai_service Model: models/gemini-1.5-pro-002
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-pro
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash-latest
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash-001
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash-001-tuning
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash-002
-INFO 2025-04-29 20:54:53,939 ai_service Model: models/gemini-1.5-flash-8b
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-1.5-flash-8b-001
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-1.5-flash-8b-latest
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-1.5-flash-8b-exp-0827
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-1.5-flash-8b-exp-0924
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-2.5-pro-exp-03-25
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-2.5-pro-preview-03-25
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-2.5-flash-preview-04-17
-INFO 2025-04-29 20:54:53,940 ai_service Model: models/gemini-2.0-flash-exp
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-001
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-exp-image-generation
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-lite-001
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-lite
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-lite-preview-02-05
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-lite-preview
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-pro-exp
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-pro-exp-02-05
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-exp-1206
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-thinking-exp-01-21
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-thinking-exp
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/gemini-2.0-flash-thinking-exp-1219
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/learnlm-1.5-pro-experimental
-INFO 2025-04-29 20:54:53,941 ai_service Model: models/learnlm-2.0-flash-experimental
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemma-3-1b-it
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemma-3-4b-it
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemma-3-12b-it
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemma-3-27b-it
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/embedding-001
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/text-embedding-004
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemini-embedding-exp-03-07
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemini-embedding-exp
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/aqa
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/imagen-3.0-generate-002
-INFO 2025-04-29 20:54:53,942 ai_service Model: models/gemini-2.0-flash-live-001
-INFO 2025-04-29 20:54:53,942 ai_service Successfully initialized Gemini AI model
-INFO 2025-04-29 20:55:00,250 ai_service Available models:
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/chat-bison-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/text-bison-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/embedding-gecko-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.0-pro-vision-latest
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-pro-vision
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-pro-latest
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-pro-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-pro-002
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-pro
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-latest
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-001-tuning
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-002
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-8b
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-8b-001
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-8b-latest
-INFO 2025-04-29 20:55:00,324 ai_service Model: models/gemini-1.5-flash-8b-exp-0827
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-1.5-flash-8b-exp-0924
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.5-pro-exp-03-25
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.5-pro-preview-03-25
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.5-flash-preview-04-17
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-exp
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-001
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-exp-image-generation
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-lite-001
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-lite
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-lite-preview-02-05
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-lite-preview
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-pro-exp
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-pro-exp-02-05
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-exp-1206
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-thinking-exp-01-21
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-thinking-exp
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-thinking-exp-1219
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/learnlm-1.5-pro-experimental
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/learnlm-2.0-flash-experimental
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemma-3-1b-it
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemma-3-4b-it
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemma-3-12b-it
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemma-3-27b-it
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/embedding-001
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/text-embedding-004
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-embedding-exp-03-07
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-embedding-exp
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/aqa
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/imagen-3.0-generate-002
-INFO 2025-04-29 20:55:00,325 ai_service Model: models/gemini-2.0-flash-live-001
-INFO 2025-04-29 20:55:00,326 ai_service Successfully initialized Gemini AI model
-INFO 2025-04-29 20:55:00,326 ai_service Generating 7-day workout plan with prompt: 
-            Create a 7-day workout plan with these specific requirements:
-            PRIMARY WORKOUT TYPE: strength
-            DAILY DURATION: 45 minutes
-            FOCUS AREA: full_body
-            INTENSITY LEVEL: low
-            EQUIPMENT: No equipment (bodyweight only)
-
-            The plan should:
-            1. Focus primarily on strength exercises
-            2. Target the full_body area
-            3. Maintain low intensity throughout
-            4. Fit within 45 minutes per day
-            5. Include appropriate rest days
-            6. Progress in difficulty throughout the week
-
-            Return the plan in this exact format (one line per field):
-            TITLE: 7-Day Strength Full Body Plan
-            DESCRIPTION: Brief description focusing on strength and full_body
-            DAY1_TYPE: strength
-            DAY1_TITLE: Day 1 - Strength Full Body
-            DAY1_DESCRIPTION: Focus on strength exercises for full_body
-            DAY1_EXERCISE1_NAME: Exercise Name
-            DAY1_EXERCISE1_SETS: number_of_sets
-            DAY1_EXERCISE1_REPS: reps_description
-            DAY1_EXERCISE1_NOTES: Brief form tip
-            DAY1_TIP1: Important tip 1
-            DAY1_TIP2: Important tip 2
-            [Repeat for DAY2 through DAY7]
-            WEEKLY_TIP1: Weekly tip 1
-            WEEKLY_TIP2: Weekly tip 2
-            
-INFO 2025-04-29 20:55:11,778 ai_service Successfully generated 7-day workout plan: {'title': '7-Day Strength Full Body Plan', 'description': 'A 7-day bodyweight strength training plan designed for full-body workouts with low intensity, progressing in difficulty throughout the week.', 'days': [{'day': 1, 'type': 'strength', 'title': 'Day 1 - Strength Full Body', 'description': 'Focus on foundational strength exercises, focusing on form and control.', 'exercises': [{'name': 'Squats', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Keep your back straight and chest up.'}, {'name': 'Push-ups (on knees if needed)', 'sets': 3, 'reps': 'As many reps as possible (AMRAP)', 'notes': 'Maintain a straight line from head to heels.'}, {'name': 'Lunges (alternating legs)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': "Ensure your front knee doesn't go past your toes."}, {'name': 'Plank', 'sets': 3, 'reps': 'Hold for 30 seconds', 'notes': 'Engage your core and keep your back straight.'}, {'name': 'Superman', 'sets': 3, 'reps': '10-12 reps', 'notes': 'Focus on squeezing your glutes and back muscles.'}], 'tips': ['Focus on controlled movements and proper form over speed.', 'Breathe deeply throughout each exercise.']}, {'day': 2, 'type': 'strength', 'title': 'Day 2 - Strength Full Body', 'description': 'Continue building strength with a focus on core stability.', 'exercises': [{'name': 'Squats', 'sets': 3, 'reps': '12-15 reps', 'notes': 'Focus on depth, going as low as comfortable.'}, {'name': 'Push-ups (on knees if needed)', 'sets': 3, 'reps': 'AMRAP', 'notes': 'Focus on controlled descent and ascent.'}, {'name': 'Lunges (alternating legs)', 'sets': 3, 'reps': '12-15 reps per leg', 'notes': 'Drive through your heel to return to standing.'}, {'name': 'Side Plank (each side)', 'sets': 3, 'reps': 'Hold for 30 seconds', 'notes': 'Keep your body in a straight line.'}, {'name': 'Bird Dog', 'sets': 3, 'reps': '10-12 reps per side', 'notes': 'Maintain a neutral spine.'}], 'tips': ['Listen to your body and take breaks when needed.', 'Stay hydrated by drinking plenty of water.']}, {'day': 3, 'type': 'rest', 'title': 'Day 3 - Rest', 'description': 'Complete rest day for recovery.', 'exercises': [{'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}], 'tips': ['Gentle stretching or a light walk is acceptable.', 'Focus on getting adequate sleep.']}, {'day': 4, 'type': 'strength', 'title': 'Day 4 - Strength Full Body', 'description': 'Increase the challenge with variations of previous exercises.', 'exercises': [{'name': 'Jump Squats', 'sets': 3, 'reps': '8-10 reps', 'notes': 'Land softly to minimize impact.'}, {'name': 'Incline Push-ups (using a wall or elevated surface)', 'sets': 3, 'reps': 'AMRAP', 'notes': 'Focus on controlled movement.'}, {'name': 'Reverse Lunges (alternating legs)', 'sets': 3, 'reps': '10-12 reps per leg', 'notes': 'Maintain balance.'}, {'name': 'Plank with shoulder taps', 'sets': 3, 'reps': '10-12 taps per side', 'notes': 'Keep your core engaged and hips stable.'}, {'name': 'Glute Bridges', 'sets': 3, 'reps': '15-20 reps', 'notes': 'Squeeze your glutes at the top of the movement.'}], 'tips': ['Focus on quality over quantity.', "Pay attention to your body's signals and adjust as needed."]}, {'day': 5, 'type': 'strength', 'title': 'Day 5 - Strength Full Body', 'description': 'Continue to build strength and endurance.', 'exercises': [{'name': 'Squats', 'sets': 4, 'reps': '15-20 reps', 'notes': 'Maintain good form throughout.'}, {'name': 'Push-ups (on knees if needed)', 'sets': 4, 'reps': 'AMRAP', 'notes': 'Focus on controlled descent and ascent.'}, {'name': 'Lunges (alternating legs)', 'sets': 4, 'reps': '15-20 reps per leg', 'notes': 'Drive through your heel to return to standing.'}, {'name': 'Side Plank (each side)', 'sets': 4, 'reps': 'Hold for 45 seconds', 'notes': 'Keep your body in a straight line.'}, {'name': 'Bird Dog', 'sets': 4, 'reps': '12-15 reps per side', 'notes': 'Maintain a neutral spine.'}], 'tips': ['Ensure proper form to prevent injury.', 'Consider adding a cool-down stretch after your workout.']}, {'day': 6, 'type': 'rest', 'title': 'Day 6 - Rest', 'description': 'Complete rest day for recovery.', 'exercises': [{'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': 'N/A', 'notes': 'N/A'}, {'name': 'N/A', 'sets': 3, 'reps': '10-12', 'notes': ''}], 'tips': []}, {'day': 7, 'type': 'strength', 'title': 'Day 7 - Strength Full Body', 'description': 'Day 7 strength workout focusing on full body', 'exercises': [{'name': 'Push-ups', 'sets': 3, 'reps': '10-12', 'notes': 'Keep your core tight'}, {'name': 'Squats', 'sets': 3, 'reps': '12-15', 'notes': 'Keep your back straight'}], 'tips': ['Focus on proper form', 'Stay hydrated']}], 'weekly_tips': []}
+INFO 2025-04-29 20:57:41,869 ai_service Available models:
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/chat-bison-001
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/text-bison-001
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/embedding-gecko-001
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/gemini-1.0-pro-vision-latest
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/gemini-pro-vision
+INFO 2025-04-29 20:57:42,119 ai_service Model: models/gemini-1.5-pro-latest
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-pro-001
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-pro-002
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-pro
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-latest
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-001
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-001-tuning
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-002
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-8b
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-8b-001
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-8b-latest
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-8b-exp-0827
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-1.5-flash-8b-exp-0924
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-2.5-pro-exp-03-25
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-2.5-pro-preview-03-25
+INFO 2025-04-29 20:57:42,120 ai_service Model: models/gemini-2.5-flash-preview-04-17
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-exp
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-001
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-exp-image-generation
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-lite-001
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-lite
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-lite-preview-02-05
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-flash-lite-preview
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-pro-exp
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-2.0-pro-exp-02-05
+INFO 2025-04-29 20:57:42,121 ai_service Model: models/gemini-exp-1206
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/gemini-2.0-flash-thinking-exp-01-21
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/gemini-2.0-flash-thinking-exp
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/gemini-2.0-flash-thinking-exp-1219
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/learnlm-1.5-pro-experimental
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/learnlm-2.0-flash-experimental
+INFO 2025-04-29 20:57:42,125 ai_service Model: models/gemma-3-1b-it
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/gemma-3-4b-it
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/gemma-3-12b-it
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/gemma-3-27b-it
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/embedding-001
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/text-embedding-004
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/gemini-embedding-exp-03-07
+INFO 2025-04-29 20:57:42,126 ai_service Model: models/gemini-embedding-exp
+INFO 2025-04-29 20:57:42,127 ai_service Model: models/aqa
+INFO 2025-04-29 20:57:42,127 ai_service Model: models/imagen-3.0-generate-002
+INFO 2025-04-29 20:57:42,127 ai_service Model: models/gemini-2.0-flash-live-001
+INFO 2025-04-29 20:57:42,127 ai_service Successfully initialized Gemini AI model
